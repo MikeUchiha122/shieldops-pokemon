@@ -1,0 +1,22 @@
+{
+  "name": "Galarian Stunfisk",
+  "types": ["ground", "steel"],
+  "base_attack": 144,
+  "base_defense": 179,
+  "base_hp": 198,
+  "ivs": {"attack": 0, "defense": 15, "hp": 15},
+  "level": 29.0,
+  "fast_move": {
+    "name": "Mud Shot",
+    "type": "ground",
+    "category": "fast",
+    "power": 3,
+    "energy": 4,
+    "cooldown_ms": 500
+  },
+  "charged_moves": [
+    {"name": "Rock Slide", "type": "rock", "category": "charged", "power": 75, "energy": 45, "cooldown_ms": 500},
+    {"name": "Earthquake", "type": "ground", "category": "charged", "power": 120, "energy": 65, "cooldown_ms": 500}
+  ],
+  "role": "lead"
+}

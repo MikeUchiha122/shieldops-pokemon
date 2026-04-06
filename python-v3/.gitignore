@@ -1,0 +1,11 @@
+.env
+__pycache__/
+*.pyc
+.venv/
+data/vectors/
+data/pokemon.db
+*.egg-info/
+dist/
+build/
+.coverage
+.pytest_cache/

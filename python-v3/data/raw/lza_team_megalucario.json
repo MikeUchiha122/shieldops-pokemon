@@ -1,0 +1,67 @@
+{
+  "name": "Mega-Lucario Offense — LZA Battle Club S7",
+  "game": "legends_za",
+  "format": "LZA Ranked S7",
+  "members": [
+    {
+      "name": "Mega-Lucario",
+      "dex_number": 448,
+      "types": ["fighting", "steel"],
+      "base_stats": {"hp":70,"attack":145,"defense":88,"sp_atk":140,"sp_def":70,"speed":112},
+      "nature": "timid",
+      "ability": "Adaptability",
+      "item": "Lucarionite",
+      "level": 50,
+      "ivs": {"hp":31,"attack":0,"defense":31,"sp_atk":31,"sp_def":31,"speed":31},
+      "evs": {"hp":4,"attack":0,"defense":0,"sp_atk":252,"sp_def":0,"speed":252},
+      "moves": [
+        {"name":"Aura Sphere","type":"fighting","category":"special","power":80,"accuracy":null,"pp":20,"makes_contact":false,"sound_based":false,"punch_based":false,"priority":0},
+        {"name":"Flash Cannon","type":"steel","category":"special","power":80,"accuracy":100,"pp":10,"makes_contact":false,"sound_based":false,"punch_based":false,"priority":0},
+        {"name":"Nasty Plot","type":"dark","category":"status","power":0,"accuracy":null,"pp":20,"makes_contact":false,"sound_based":false,"punch_based":false,"priority":0},
+        {"name":"Vacuum Wave","type":"fighting","category":"special","power":40,"accuracy":100,"pp":30,"makes_contact":false,"sound_based":false,"punch_based":false,"priority":1}
+      ],
+      "tera_type": null,
+      "can_mega": true
+    },
+    {
+      "name": "Mega-Gardevoir",
+      "dex_number": 282,
+      "types": ["psychic", "fairy"],
+      "base_stats": {"hp":68,"attack":65,"defense":65,"sp_atk":165,"sp_def":135,"speed":100},
+      "nature": "modest",
+      "ability": "Pixilate",
+      "item": "Gardevoirite",
+      "level": 50,
+      "ivs": {"hp":31,"attack":0,"defense":31,"sp_atk":31,"sp_def":31,"speed":31},
+      "evs": {"hp":4,"attack":0,"defense":0,"sp_atk":252,"sp_def":0,"speed":252},
+      "moves": [
+        {"name":"Moonblast","type":"fairy","category":"special","power":95,"accuracy":100,"pp":15,"makes_contact":false,"sound_based":false,"punch_based":false,"priority":0},
+        {"name":"Psychic","type":"psychic","category":"special","power":90,"accuracy":100,"pp":10,"makes_contact":false,"sound_based":false,"punch_based":false,"priority":0},
+        {"name":"Hyper Voice","type":"normal","category":"special","power":90,"accuracy":100,"pp":10,"makes_contact":false,"sound_based":true,"punch_based":false,"priority":0},
+        {"name":"Will-O-Wisp","type":"fire","category":"status","power":0,"accuracy":85,"pp":15,"makes_contact":false,"sound_based":false,"punch_based":false,"priority":0}
+      ],
+      "tera_type": null,
+      "can_mega": true
+    },
+    {
+      "name": "Marshadow",
+      "dex_number": 802,
+      "types": ["fighting", "ghost"],
+      "base_stats": {"hp":90,"attack":125,"defense":80,"sp_atk":90,"sp_def":90,"speed":125},
+      "nature": "jolly",
+      "ability": "Technician",
+      "item": "Life Orb",
+      "level": 50,
+      "ivs": {"hp":31,"attack":31,"defense":31,"sp_atk":0,"sp_def":31,"speed":31},
+      "evs": {"hp":4,"attack":252,"defense":0,"sp_atk":0,"sp_def":0,"speed":252},
+      "moves": [
+        {"name":"Spectral Thief","type":"ghost","category":"physical","power":90,"accuracy":100,"pp":10,"makes_contact":true,"sound_based":false,"punch_based":false,"priority":0},
+        {"name":"Close Combat","type":"fighting","category":"physical","power":120,"accuracy":100,"pp":5,"makes_contact":true,"sound_based":false,"punch_based":false,"priority":0},
+        {"name":"Shadow Sneak","type":"ghost","category":"physical","power":40,"accuracy":100,"pp":30,"makes_contact":true,"sound_based":false,"punch_based":false,"priority":1},
+        {"name":"Ice Punch","type":"ice","category":"physical","power":75,"accuracy":100,"pp":15,"makes_contact":true,"sound_based":false,"punch_based":false,"priority":0}
+      ],
+      "tera_type": null,
+      "can_mega": false
+    }
+  ]
+}

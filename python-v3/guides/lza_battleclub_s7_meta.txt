@@ -1,0 +1,60 @@
+=== GUÍA META LZA — BATTLE CLUB SEASON 7 (Ene-Feb 2026) ===
+Formato: Battle Royale 4 jugadores, 3 minutos, KOs = puntos, Nivel 50
+Premio S-Rank Season 7: Blazikenite (Mega Blaziken)
+
+REGLAS LZA BATTLE CLUB:
+- Solo 1 Mega Evolution por batalla (elegir bien el momento)
+- Items flotantes aparecen durante la batalla para power-ups
+- Si un Pokemon es KO, el entrenador regresa al punto de inicio (equipo sana)
+- Solo 3 cambios de Pokemon activo por batalla (resetea si un Pokemon tuyo es KO)
+- Legendarios baneados: Xerneas, Yveltal, Zygarde, Mewtwo, Kyogre, Groudon, Rayquaza, Diancie
+
+TIER S - META DOMINANTE S5-S7:
+MARSHADOW (Top 1 uso)
+Spectral Thief / Close Combat / Shadow Sneak / Ice Punch @ Life Orb
+Jolly | 252 Atk / 252 Vel | Technician
+Spectral Thief roba los boosts del rival. Shadow Sneak prioridad. Top 1 Pikalytics LZA.
+
+MEGA-LUCARIO
+Aura Sphere / Flash Cannon / Nasty Plot / Vacuum Wave @ Lucarionite
+Timid | 252 SpA / 252 Vel | Adaptability (post-Mega = STAB 2.0x)
+Flash Cannon mata Fairy 2x + Adaptable = OHKO Gardevoir. Nasty Plot + Vacuum Wave prioridad.
+
+METAGROSS / MEGA-METAGROSS
+Meteor Mash / Earthquake / Ice Punch / Thunder Punch @ Life Orb
+Adamant | 252 Atk / 252 Vel
+Pivot/Tank S7. Steel resiste 10 tipos. Mega-Metagross: 145 Atk + Clear Body.
+
+GYARADOS / MEGA-GYARADOS
+Waterfall / Crunch / Ice Fang / Dragon Dance @ Life Orb
+Adamant | 252 Atk / 252 Vel | Moxie (Intimidate en Mega)
+Moxie: +1 Atk por cada KO. Un Dragon Dance = sweep.
+
+MEGA-GARDEVOIR
+Moonblast / Psychic / Hyper Voice / Will-O-Wisp @ Gardevoirite
+Modest | 252 SpA / 252 Vel | Pixilate (Hyper Voice se vuelve Fairy 1.2x)
+165 SpA post-mega. Hyper Voice spread (golpea todos los rivales). Quema con Wisp.
+
+TIER A:
+GARCHOMP / MEGA-GARCHOMP: Earthquake / Dragon Claw / Stone Edge / Swords Dance
+MAGEARNA (Hyperspace Dex): Fleur Cannon / Flash Cannon / Aura Sphere / Shift Gear
+GHOLDENGO (Hyperspace Dex): Make It Rain / Shadow Ball / Nasty Plot / Protect. Good as Gold = inmune a movimientos de estado.
+BAXCALIBUR: Glaive Rush / Dragon Dance / Ice Shard / Iron Head
+
+ROLES EN LZA BATTLE ROYALE:
+- Sniper: Armarouge, Clefable especial — presión de largo alcance
+- Assassin: Golisopod, Mega Absol, Mega Greninja — velocidad y prioridad
+- Pivot/Tank: Metagross, Mega Swampert — absorbe presión
+- Wallbreaker: Baxcalibur, Gholdengo — rompe cores defensivos
+
+TIMING MEGA EVOLUTION (CRÍTICO):
+- Mega solo 1 por batalla. Si desperdicias en KO fácil, perdiste la ventaja
+- Activa Mega cuando: (1) el rival ya gastó su Mega, (2) tienes ventaja numérica, (3) el Mega que activas rompe el team rival
+- Lucario: activa Mega después de Nasty Plot para cerrar la batalla
+- Gardevoir: activa Mega para cubrir Spread (Hyper Voice a todos)
+
+EV TRAINING LZA:
+- Reiniciador de EVs disponible en Tienda de Items Lumialia (reset instantáneo gratis)
+- Hyper Training: Maestro en Centro de Lumialia (1 Chapa Plateada por stat)
+- Mints para naturalezas: Tienda de Mints en Lumialia Market (precio: Lumicoins)
+- Vitaminas disponibles en Pokémercado Lumialia
