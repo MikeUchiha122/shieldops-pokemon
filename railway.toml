@@ -1,8 +1,10 @@
 [build]
 builder = "NIXPACKS"
-pythonVersion = "3.12"
+
+[pkgs]
+python3_12 = ""
 
 [deploy]
-startCommand = "which python || which python3.12 || which python3.11 || which python3; cd backend && python -m uvicorn main:app --host 0.0.0.0 --port $PORT"
+startCommand = "cd backend && python3.12 -m uvicorn main:app --host 0.0.0.0 --port $PORT"
 healthcheckPath = "/api/v1/health"
 healthcheckTimeout = 60
