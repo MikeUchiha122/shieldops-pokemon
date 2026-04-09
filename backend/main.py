@@ -42,7 +42,7 @@ app = FastAPI(
 # CORS — ajustar origins en producción
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://MikeUchiha122.github.io", "https://thriving-tranquility-production.up.railway.app"],
+    allow_origins=["https://MikeUchiha122.github.io", "https://thriving-tranquility-production.up.railway.app", "https://railway.app"],
     allow_methods=["GET", "POST"],
     allow_headers=["Content-Type", "Authorization"],
 )
