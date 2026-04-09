@@ -1,9 +1,0 @@
-.env
-__pycache__/
-*.pyc
-.venv/
-data/vectors_go/
-data/go.db
-*.egg-info/
-.pytest_cache/
-.coverage
