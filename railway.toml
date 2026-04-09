@@ -1,8 +1,6 @@
 [build]
 builder = "NIXPACKS"
-buildCommand = "pip3 install -r backend/requirements.txt"
-[pkgs]
-python3 = "3.11"
+pythonVersion = "3.11"
 
 [deploy]
 startCommand = "cd backend && python3 -m uvicorn main:app --host 0.0.0.0 --port $PORT"
