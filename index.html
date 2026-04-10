@@ -3694,7 +3694,9 @@ function __switchMode(m){
 //  Cambia la URL cuando tu backend esté en Railway:
 //  var BACKEND = "https://tu-proyecto.up.railway.app/api/v1";
 // ═══════════════════════════════════════════════════════════════
-var BACKEND = "https://thriving-tranquility-production.up.railway.app/api/v1";
+//  Backend local (descomenta si tienes el backend corriendo en puerto 8001):
+// var BACKEND = "http://localhost:8001/api/v1";
+var BACKEND = null;
 var CEREBROS_ONLINE = {eyp: false, lza: false, go: false};
 var CEREBROS_CHECKED = false;
 
@@ -3738,12 +3740,10 @@ function updateBackendBar() {
     bar.innerHTML = '<span style="color:#4ade80;font-weight:700">✅ 3/3 Cerebros Online</span>' +
       ' <span style="color:var(--sub);font-size:10px">— Backend conectado en ' + BACKEND + '</span>';
   } else if (online === 0) {
-    bar.style.background = 'rgba(248,113,113,.06)';
-    bar.style.borderColor = 'rgba(248,113,113,.3)';
-    bar.innerHTML = '<span style="color:#f87171;font-weight:700">⚡ Backend Offline</span>' +
-      ' <span style="color:var(--sub);font-size:10px">— Frontend funciona de forma independiente · ' +
-      '<a href="javascript:checkCerebros()" style="color:var(--acc)">Reconectar</a>' +
-      ' · Instrucciones: cd backend && uvicorn main:app --reload</span>';
+    bar.style.background = 'rgba(34,211,238,.06)';
+    bar.style.borderColor = 'rgba(34,211,238,.3)';
+    bar.innerHTML = '<span style="color:#22d3ee;font-weight:700">⚡ Modo Offline</span>' +
+      ' <span style="color:var(--sub);font-size:10px">— Cálculos local · Todo funciona</span>';
   } else {
     bar.style.background = 'rgba(251,191,36,.06)';
     bar.style.borderColor = 'rgba(251,191,36,.3)';
@@ -4032,8 +4032,8 @@ window.addEventListener('DOMContentLoaded', function() {
     secGoCalc.appendChild(badgeGo);
   }
 
-  // Verificar cerebros (no bloquea el render)
-  setTimeout(checkCerebros, 800);
+  // Verificar cerebros solo si hay backend configurado
+  if (BACKEND) setTimeout(checkCerebros, 800);
 });
 </script>
 
