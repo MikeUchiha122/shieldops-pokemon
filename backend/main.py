@@ -54,6 +54,10 @@ app.include_router(lza_router, prefix=API_V1)
 app.include_router(go_router,  prefix=API_V1)
 
 
+@app.get("/", tags=["Sistema"])
+async def root() -> dict:
+    return {"message": "ShieldOps Backend", "version": "1.0.0", "endpoints": ["/api/v1/health", "/docs"]}
+
 @app.get(f"{API_V1}/health", response_model=dict, tags=["Sistema"])
 async def health_global() -> dict:
     """Estado global — consulta los 3 cerebros."""
