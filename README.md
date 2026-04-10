@@ -33,6 +33,32 @@ xdg-open ShieldOps-Proyecto/frontend/index.html
 
 > ⚠️ **Importante:** El frontend funciona **sin instalar nada** — solo ábrelo en Chrome o Edge.
 
+### 🤖 ¿Usar los 3 Cerebros o No?
+
+| Característica | Sin Cerebros (Frontend solo) | Con Cerebros (Backend) |
+|----------------|------------------------------|----------------------|
+| **Calculadora de daño** | ✅ Funciona (JavaScript) | ✅ Verificación extra |
+| **Equipos predefinidos** | ✅ Funciona | ✅ Validación de legality |
+| **Guía de entrenamiento** | ✅ Funciona | ✅ Mejores recomendaciones |
+| **Agente IA** | ✅ Funciona (Gemini) | ✅ Mejor contexto |
+| **Indicador de estado** | ⚡ "Modo Offline" | ✅ "3/3 Cerebros Online" |
+| **Instalación** | Ninguna | Requiere Python + pip |
+| **Velocidad** | Instantáneo | Depende de la red |
+
+#### Recomendación
+
+- **Sin backend:** Ideal para uso rápido — todo funciona localmente en JavaScript.
+- **Con backend:** Para verificación precisa, validaciones adicionales y futuro desarrollo.
+
+#### Diferencia en los Cálculos
+
+Los 3 cerebros (backend Python) realizan cálculos más precisos siguiendo las reglas oficiales de cada juego:
+- **EyP:** Gen IX, 16 rolls de daño, Tera-type, Mega evolutions
+- **LZA:** Action Time PvP, startup frames, cooldowns
+- **GO:** CP fórmula, multiplicadores GO (×1.2 STAB, ×1.6 super efectivo)
+
+El frontend tiene una implementación en JavaScript que cubre ~95% de los casos. El backend verifica y valida estos cálculos con lógica 100% oficial.
+
 #### 3. Configurar API Key (opcional)
 
 Para el agente IA:
