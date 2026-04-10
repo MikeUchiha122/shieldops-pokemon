@@ -6,101 +6,113 @@
 
 **Motor de cálculo competitivo para Escarlata/Púrpura, Leyendas Z-A y Pokémon GO**
 
-🌐 **Web:** https://MikeUchiha122.github.io/shieldops-pokemon
-
 </div>
 
 ---
 
 ## 🚀 Inicio Rápido
 
-### ⚡ Online (Recomendado)
+### 📥 Descargar y Ejecutar
 
-Abre en tu navegador: **https://MikeUchiha122.github.io/shieldops-pokemon**
+#### 1. Descargar el ZIP
 
-> Funciona 100% offline — todos los cálculos se hacen localmente en JavaScript
+Descarga **ShieldOps-CONECTADO.zip** de donde lo obtuviste y descomprímelo.
 
-### 💻 Local (Frontend)
+#### 2. Abrir el Frontend
 
 ```bash
 # Windows
-start index.html
+start ShieldOps-Proyecto\frontend\index.html
 
 # Mac
-open index.html
+open ShieldOps-Proyecto/frontend/index.html
 
 # Linux
-xdg-open index.html
+xdg-open ShieldOps-Proyecto/frontend/index.html
 ```
+
+> ⚠️ **Importante:** El frontend funciona **sin instalar nada** — solo ábrelo en Chrome o Edge.
+
+#### 3. Configurar API Key (opcional)
+
+Para el agente IA:
+1. Ve a [aistudio.google.com/apikey](https://aistudio.google.com/apikey)
+2. Crea una API key (es gratis)
+3. Pégala en el recuadro amarillo del frontend y guarda
 
 ---
 
-## 📁 Estructura del Proyecto
+## 🖥️ Desplegar Backend (Opcional)
 
-```
-shieldops-pokemon/
-├── 🖥️  index.html          ← Aplicación completa (todo en uno)
-├── 🐍  backend/             ← Backend FastAPI (opcional)
-│   ├── main.py             ← Servidor Python
-│   ├── core/               ← Tipos y tablas de efectividad
-│   ├── cerebros/           ← 3 motores de cálculo
-│   │   ├── eyp/            ← Escarlata/Púrpura VGC
-│   │   ├── lza/            ← Leyendas Z-A Action PvP
-│   │   └── go/             ← Pokémon GO GBL
-│   └── tests/              ← 69 tests
-├── 🐳 Dockerfile            ← Para desplegar en Railway
-└── 📖 README.md            ← Este archivo
-```
-
----
-
-## 🛠️ Instalación del Backend (Opcional)
-
-El frontend funciona sin el backend. Pero si quieres los 3 cerebros conectados:
+El frontend funciona sin backend. Pero si quieres los **3 cerebros conectados**:
 
 ### Windows (PowerShell)
 
 ```powershell
-# 1. Entrar al backend
-cd backend
+# 1. Entra a la carpeta del backend
+cd ruta\ShieldOps-Proyecto\backend
 
-# 2. Crear entorno virtual
+# 2. Crea entorno virtual
 python -m venv .venv
 
-# 3. Activar
+# 3. Activa el entorno
 .venv\Scripts\activate
+# Verás (.venv) al inicio de la línea
 
-# 4. Instalar dependencias
-pip install -r requirements.txt -r requirements-dev.txt
+# 4. Instala dependencias
+pip install -r requirements.txt
+pip install -r requirements-dev.txt
 
-# 5. Verificar tests (69 passed)
+# 5. Verifica los tests (deben dar 69 passed)
 python -m pytest tests/ -v
 
-# 6. Iniciar servidor en puerto 8001
+# 6. Inicia el servidor en puerto 8001
 uvicorn main:app --reload --host 0.0.0.0 --port 8001
+
+# Verás: INFO: Uvicorn running on http://0.0.0.0:8001
 ```
 
 ### Mac / Linux / Kali
 
 ```bash
-# 1. Entrar al backend
-cd backend
+# 1. Entra a la carpeta del backend
+cd ruta/ShieldOps-Proyecto/backend
 
-# 2. Crear entorno virtual
+# 2. Crea entorno virtual
 python3 -m venv .venv
 source .venv/bin/activate
 
-# 3. Instalar dependencias
-pip install -r requirements.txt -r requirements-dev.txt
+# 3. Instala dependencias
+pip install -r requirements.txt
+pip install -r requirements-dev.txt
 
-# Kali Linux (si hay error)
+# Kali Linux (si da error de sistema)
 pip install -r requirements.txt --break-system-packages
+pip install -r requirements-dev.txt --break-system-packages
 
-# 4. Verificar tests (69 passed)
+# 4. Verifica los tests
 python -m pytest tests/ -v
 
-# 5. Iniciar servidor en puerto 8001
+# 5. Inicia el servidor en puerto 8001
 uvicorn main:app --reload --host 0.0.0.0 --port 8001
+```
+
+### Verificar que los Cerebros Funcionan
+
+Con el servidor corriendo, abre una **nueva terminal**:
+
+```bash
+# Estado de los 3 cerebros
+curl http://localhost:8001/api/v1/health
+
+# Cerebro A — EyP VGC 2026
+curl http://localhost:8001/api/v1/eyp/health
+
+# Cerebro B — LZA Action PvP
+curl http://localhost:8001/api/v1/lza/health
+
+# Cerebro C — Pokémon GO
+curl http://localhost:8001/api/v1/go/health
 ```
 
 ### Conectar Frontend al Backend
@@ -117,43 +129,43 @@ var BACKEND = "http://localhost:8001/api/v1";
 
 ---
 
-## ☁️ Desplegar en GitHub Pages
+## 📁 Estructura del Proyecto
 
-```bash
-# 1. Clone el repo
-git clone https://github.com/MikeUchiha122/shieldops-pokemon.git
-cd shieldops-pokemon
-
-# 2. El archivo index.html ya está en la raíz
-# Solo necesitas hacer:
-
-git add .
-git commit -m "Actualización"
-git push
-
-# 3. Activa GitHub Pages:
-# Settings → Pages → Branch: main → Save
-
-# URL: https://MikeUchiha122.github.io/shieldops-pokemon
+```
+ShieldOps-Proyecto/
+├── frontend/
+│   ├── index.html          ← Aplicación completa
+│   └── README.md           ← Guía del frontend
+└── backend/
+    ├── main.py             ← FastAPI app
+    ├── requirements.txt
+    ├── requirements-dev.txt
+    ├── core/
+    │   └── types.py        ← Tabla efectividad tipos
+    ├── cerebros/
+    │   ├── eyp/            ← Cerebro A: EyP VGC
+    │   ├── lza/            ← Cerebro B: LZA Action
+    │   └── go/             ← Cerebro C: Pokémon GO
+    └── tests/
+        ├── unit/           ← 54 tests
+        └── integration/     ← 15 tests
 ```
 
 ---
 
 ## 🧪 Tests
 
-| Suite | Tests | Estado |
-|-------|-------|--------|
-| `unit/test_eyp.py` | 19 | ✅ Gen IX, STAB, Tera, 16 rolls |
-| `unit/test_lza.py` | 16 | ✅ Startup frames, Mega |
-| `unit/test_go.py` | 19 | ✅ CP, efectividad ×1.6 |
-| `integration/test_api.py` | 15 | ✅ Endpoints |
+| Suite | Tests | Cobertura |
+|-------|-------|-----------|
+| `unit/test_eyp.py` | 19 | Stats Gen IX, STAB, Tera, 16 rolls |
+| `unit/test_lza.py` | 16 | Startup frames, cooldowns, Mega |
+| `unit/test_go.py` | 19 | CP, efectividad ×1.6/x0.391 |
+| `integration/test_api.py` | 15 | Endpoints, aislamiento |
 | **TOTAL** | **69** | ✅ 0 fallos |
 
 ---
 
 ## 🔧 Tecnologías
-
-<div align="center">
 
 | Componente | Tecnología |
 |------------|------------|
@@ -162,9 +174,6 @@ git push
 | Backend | FastAPI · Pydantic v2 · Uvicorn |
 | Python | 3.12+ |
 | Tests | pytest · httpx |
-| Deploy | GitHub Pages |
-
-</div>
 
 ---
 
