@@ -18,9 +18,10 @@ class TestHealthEndpoints:
         assert r.status_code == 200
         data = r.json()
         assert "cerebros" in data
-        assert "eyp" in data["cerebros"]
-        assert "lza" in data["cerebros"]
-        assert "go"  in data["cerebros"]
+        assert "eyp"       in data["cerebros"]
+        assert "lza"       in data["cerebros"]
+        assert "go"        in data["cerebros"]
+        assert "champions" in data["cerebros"]
 
     def test_health_eyp(self):
         r = client.get("/api/v1/eyp/health")
@@ -41,6 +42,13 @@ class TestHealthEndpoints:
         assert r.status_code == 200
         body = r.json()
         assert body["cerebro"] == "go"
+        assert body["ok"] is True
+
+    def test_health_champions(self):
+        r = client.get("/api/v1/champions/health")
+        assert r.status_code == 200
+        body = r.json()
+        assert body["cerebro"] == "champions"
         assert body["ok"] is True
 
 
@@ -236,25 +244,105 @@ class TestGOAPI:
         assert r.status_code == 422
 
 
+class TestChampionsAPI:
+    def _pokemon(self, nombre="Flutter Mane", tipos=None, hp=55, spa=135, spd=135):
+        return {
+            "nombre": nombre,
+            "tipos": tipos or ["fantasma", "hada"],
+            "stats_base": {
+                "hp": hp, "ataque": 55, "defensa": 55,
+                "ataque_especial": spa, "defensa_especial": spd, "velocidad": 135,
+            },
+            "evs": {"hp": 4, "ataque": 0, "defensa": 0,
+                    "ataque_especial": 252, "defensa_especial": 0, "velocidad": 252},
+            "ivs": {"hp": 31, "ataque": 31, "defensa": 31,
+                    "ataque_especial": 31, "defensa_especial": 31, "velocidad": 31},
+            "naturaleza": "modesto",
+            "nivel": 50,
+        }
+
+    def test_dano_champions(self):
+        payload = {
+            "atacante": self._pokemon(),
+            "defensor": self._pokemon("Garchomp", ["dragon", "tierra"], hp=50, spa=80, spd=50),
+            "movimiento": "brillo_magico",
+        }
+        r = client.post("/api/v1/champions/dano", json=payload)
+        assert r.status_code == 200
+        body = r.json()
+        assert body["cerebro"] == "champions"
+        assert body["ok"] is True
+        assert body["data"]["dano_maximo"] >= body["data"]["dano_minimo"]
+        assert body["data"]["efectividad"] == 2.0   # hada vs dragon/tierra
+
+    def test_dano_movimiento_invalido_422(self):
+        payload = {
+            "atacante": self._pokemon(),
+            "defensor": self._pokemon(),
+            "movimiento": "movimiento_que_no_existe_xyz",
+        }
+        r = client.post("/api/v1/champions/dano", json=payload)
+        assert r.status_code == 422
+
+    def test_catalogo_champions(self):
+        r = client.get("/api/v1/champions/catalogo")
+        assert r.status_code == 200
+        body = r.json()
+        assert body["cerebro"] == "champions"
+        assert body["data"]["total"] > 0
+
+    def test_catalogo_tier_s(self):
+        r = client.get("/api/v1/champions/catalogo?tier=S")
+        assert r.status_code == 200
+        body = r.json()
+        assert all(p["tier"] == "S" for p in body["data"]["pokemon"])
+
+    def test_movimientos_champions(self):
+        r = client.get("/api/v1/champions/movimientos")
+        assert r.status_code == 200
+        assert r.json()["data"]["total"] > 0
+
+    def test_movimientos_por_tipo(self):
+        r = client.get("/api/v1/champions/movimientos?tipo=dragon")
+        assert r.status_code == 200
+        movs = r.json()["data"]["movimientos"]
+        assert all(m["tipo"] == "dragon" for m in movs)
+
+    def test_cerebro_champions_aislado(self):
+        # Payload de GO no puede ir a Champions
+        r = client.post("/api/v1/champions/dano", json={"liga": "great", "pokemon": "Swampert"})
+        assert r.status_code == 422
+
+
 class TestAislamientoCerebros:
-    """Verifica que los 3 cerebros no comparten estado ni se contaminan."""
+    """Verifica que los 4 cerebros no comparten estado ni se contaminan."""
 
     def test_endpoints_separados(self):
-        r_eyp = client.get("/api/v1/eyp/health")
-        r_lza = client.get("/api/v1/lza/health")
-        r_go  = client.get("/api/v1/go/health")
-        assert r_eyp.json()["cerebro"] == "eyp"
-        assert r_lza.json()["cerebro"] == "lza"
-        assert r_go.json()["cerebro"]  == "go"
+        r_eyp  = client.get("/api/v1/eyp/health")
+        r_lza  = client.get("/api/v1/lza/health")
+        r_go   = client.get("/api/v1/go/health")
+        r_chmp = client.get("/api/v1/champions/health")
+        assert r_eyp.json()["cerebro"]  == "eyp"
+        assert r_lza.json()["cerebro"]  == "lza"
+        assert r_go.json()["cerebro"]   == "go"
+        assert r_chmp.json()["cerebro"] == "champions"
 
     def test_prefijos_no_se_mezclan(self):
-        # /lza/dano no existe en /eyp
+        # /lza/validar-combate no existe en /eyp
         r = client.post("/api/v1/eyp/validar-combate", json={})
         assert r.status_code == 404 or r.status_code == 422
 
     def test_respuesta_incluye_cerebro_correcto(self):
         r = client.get("/api/v1/go/health")
         assert r.json()["cerebro"] == "go"
-        # No debe decir 'eyp' ni 'lza'
         assert r.json()["cerebro"] != "eyp"
-        assert r.json()["cerebro"] != "lza"
+        assert r.json()["cerebro"] != "champions"
+
+    def test_champions_no_acepta_payload_eyp(self):
+        # Payload EyP (con TipoElemental) no debe funcionar en Champions
+        r = client.post("/api/v1/champions/dano", json={
+            "atacante": {"tipos": ["electrico", "dragon"], "evs": {"atq_esp": 252}},
+            "defensor": {},
+            "movimiento": "brillo_magico",
+        })
+        assert r.status_code == 422
