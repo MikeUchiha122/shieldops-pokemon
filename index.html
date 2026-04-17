@@ -219,6 +219,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;
 .mode-tab:hover{color:#e2e8f0}
 .mode-tab.on-v3{color:#f97316;border-bottom:3px solid #f97316;margin-bottom:-2px;background:#111c2b}
 .mode-tab.on-go{color:#e8a700;border-bottom:3px solid #e8a700;margin-bottom:-2px;background:#111c2b}
+.mode-tab.on-champions{color:#c084fc;border-bottom:3px solid #c084fc;margin-bottom:-2px;background:#111c2b}
 </style>
 <div class="mode-bar">
   <button class='mode-tab on-v3' id='__tab_v3' onclick='__switchMode("v3")'>
@@ -226,6 +227,9 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;
   </button>
   <button class='mode-tab' id='__tab_go' onclick='__switchMode("go")'>
     🎮 ShieldOps GO  ·  GO Battle League Season 26
+  </button>
+  <button class='mode-tab' id='__tab_champions' onclick='__switchMode("champions")'>
+    🏆 Champions  ·  Singles Multi-Gen
   </button>
 </div>
 <div id="__sec_v3">
@@ -356,6 +360,22 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;
       </div>
     </div>
   </div>
+
+  <!-- ── Cerebro A: Guía y Equipo ── -->
+  <div class="card" style="margin-top:16px;border-color:rgba(249,115,22,.3)">
+    <div class="sec" style="color:var(--eyp)">🧠 Cerebro EyP — Guía &amp; Equipo VGC</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;align-items:flex-end">
+      <div style="flex:1;min-width:180px">
+        <label class="fl">Pokémon</label>
+        <input id="eyp__guide-pokemon" placeholder="ej: Flutter Mane, Miraidon..." style="font-size:13px;padding:9px 12px">
+      </div>
+      <button class="btn eyp" style="font-size:12px;padding:9px 16px" onclick="eyp__generarGuia()">Guía del cerebro</button>
+      <button class="btn sm" style="font-size:12px;padding:9px 16px" onclick="eyp__generarEquipo()">Mejor equipo</button>
+    </div>
+    <div id="eyp__cerebro-guia-result" style="display:none;margin-top:10px;padding:12px;background:rgba(249,115,22,.05);border:1px solid rgba(249,115,22,.2);border-radius:8px;font-size:11px;font-family:var(--mono);white-space:pre-wrap;line-height:1.6"></div>
+    <div style="font-size:10px;color:var(--dim);margin-top:6px">Simula vs 10 amenazas meta VGC 2026 — requiere backend online</div>
+  </div>
+
 </div>
 
 
@@ -422,6 +442,22 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;
       </div>
     </div>
   </div>
+
+  <!-- ── Cerebro B: Guía y Equipo ── -->
+  <div class="card" style="margin-top:16px;border-color:rgba(167,139,250,.3)">
+    <div class="sec" style="color:var(--lza)">🧠 Cerebro LZA — Guía &amp; Equipo Battle Club</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;align-items:flex-end">
+      <div style="flex:1;min-width:180px">
+        <label class="fl">Pokémon</label>
+        <input id="lza__guide-pokemon" placeholder="ej: Garchomp, Mega-Lucario..." style="font-size:13px;padding:9px 12px">
+      </div>
+      <button class="btn lza" style="font-size:12px;padding:9px 16px" onclick="lza__generarGuia()">Guía del cerebro</button>
+      <button class="btn sm" style="font-size:12px;padding:9px 16px" onclick="lza__generarEquipo()">Mejor equipo</button>
+    </div>
+    <div id="lza__cerebro-guia-result" style="display:none;margin-top:10px;padding:12px;background:rgba(167,139,250,.05);border:1px solid rgba(167,139,250,.2);border-radius:8px;font-size:11px;font-family:var(--mono);white-space:pre-wrap;line-height:1.6"></div>
+    <div style="font-size:10px;color:var(--dim);margin-top:6px">Simula Action Time vs amenazas meta LZA — requiere backend online</div>
+  </div>
+
 </div>
 
 
@@ -545,6 +581,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;
         <select id="g-game-auto" style="font-size:13px;padding:10px 12px">
           <option value="lza">🔮 Leyendas Z-A — Battle Club S7</option>
           <option value="eyp">⚡ Escarlata/Púrpura — VGC 2026 Reg F</option>
+          <option value="champions">🏆 Champions — Singles Multi-Gen</option>
         </select>
         <label class="fl">Nivel <span style="color:var(--dim)">(ajusta el lenguaje de la guía)</span></label>
         <select id="g-level-auto" style="font-size:13px;padding:10px 12px">
@@ -570,6 +607,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;
         <select id="g-game-exp">
           <option value="lza">🔮 Leyendas Z-A — Battle Club S7</option>
           <option value="eyp">⚡ Escarlata/Púrpura — VGC 2026 Reg F</option>
+          <option value="champions">🏆 Champions — Singles Multi-Gen</option>
         </select>
         <div class="row2" style="margin-top:0">
           <div>
@@ -2201,9 +2239,11 @@ async function genGuide(mode){
     game  = document.getElementById('g-game-auto').value;
     const lvl = document.getElementById('g-level-auto').value;
     const btn = document.getElementById('g-btn-auto');
-    gameLabel = game === 'lza' ? 'Leyendas Z-A (LZA)' : 'Escarlata/Púrpura (EyP)';
+    gameLabel = game === 'lza' ? 'Leyendas Z-A (LZA)' : game === 'champions' ? 'Pokémon Champions (Singles Multi-Gen)' : 'Escarlata/Púrpura (EyP)';
     fmtLabel  = game === 'lza'
       ? 'LZA Battle Club Season 7 — Battle Royale, Nivel 50, 1 Mega por batalla'
+      : game === 'champions'
+      ? 'Champions Singles — Gen I-IX, Nivel 50-100, sin Tera/Mega/Dynamax'
       : 'VGC 2026 Regulation F — Dobles, Nivel 50, 6 Pokémon / 4 seleccionados';
 
     const lvlCtx = lvl === 'beginner'
@@ -2323,9 +2363,11 @@ Sé MUY específico. Nombres reales de NPCs, ubicaciones, costos en monedas.`;
     const item  = document.getElementById('g-item-exp').value.trim();
     const btn   = document.getElementById('g-btn-exp');
 
-    gameLabel = game === 'lza' ? 'Leyendas Z-A (LZA)' : 'Escarlata/Púrpura (EyP)';
+    gameLabel = game === 'lza' ? 'Leyendas Z-A (LZA)' : game === 'champions' ? 'Pokémon Champions (Singles Multi-Gen)' : 'Escarlata/Púrpura (EyP)';
     fmtLabel  = game === 'lza'
       ? 'LZA Battle Club Season 7 — Battle Royale, Nivel 50'
+      : game === 'champions'
+      ? 'Champions Singles — Gen I-IX, sin Tera/Mega/Dynamax'
       : 'VGC 2026 Regulation F — Dobles, Nivel 50';
 
     btn.disabled = true;
@@ -3651,16 +3693,351 @@ async function validateGO(){
 
 </script>
 </div><!-- fin sec_go -->
+
+<!-- ═══════════════ CHAMPIONS SECTION ═══════════════ -->
+<div id="__sec_champions" style="display:none">
+<style>
+:root{--champ:#c084fc}
+.champ-card{background:linear-gradient(135deg,rgba(192,132,252,.07),rgba(139,92,246,.04));
+  border:1px solid rgba(192,132,252,.25);border-radius:12px;padding:20px;margin-bottom:16px}
+.champ-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:900;
+  background:linear-gradient(90deg,#c084fc,#818cf8);-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;margin-bottom:4px}
+.champ-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-family:var(--sans);
+  font-weight:700;padding:2px 9px;border-radius:20px;
+  background:rgba(192,132,252,.12);border:1px solid rgba(192,132,252,.35);color:#c084fc}
+.champ-input{width:100%;background:#0d1420;border:1px solid rgba(192,132,252,.3);border-radius:8px;
+  padding:10px 14px;color:#e2e8f0;font-size:14px;font-family:var(--sans);outline:none;box-sizing:border-box}
+.champ-input:focus{border-color:var(--champ)}
+.champ-btn{padding:10px 22px;background:linear-gradient(135deg,#7c3aed,#c084fc);
+  border:none;border-radius:8px;color:#fff;font-weight:800;font-family:'Syne',sans-serif;
+  cursor:pointer;font-size:13px;transition:opacity .2s}
+.champ-btn:hover{opacity:.85}
+.champ-result{margin-top:14px;padding:14px;background:rgba(192,132,252,.05);
+  border:1px solid rgba(192,132,252,.2);border-radius:8px;font-size:12px;
+  font-family:var(--mono);display:none;white-space:pre-wrap;line-height:1.6}
+.tier-s{color:#f59e0b;font-weight:700} .tier-a{color:#34d399} .tier-b{color:#60a5fa}
+.champ-tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.champ-tab{padding:7px 16px;border-radius:20px;font-size:11px;font-weight:700;
+  font-family:var(--sans);cursor:pointer;border:1px solid rgba(192,132,252,.3);
+  background:transparent;color:var(--sub);transition:all .2s}
+.champ-tab.active,.champ-tab:hover{background:rgba(192,132,252,.12);color:#c084fc;
+  border-color:var(--champ)}
+</style>
+
+<div class="wrap" style="max-width:980px;margin:0 auto;padding:24px 16px">
+  <!-- Header Champions -->
+  <div class="champ-card" style="margin-bottom:24px">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <div>
+        <div class="champ-title">🏆 Pokémon Champions</div>
+        <div style="color:var(--sub);font-size:13px;margin-bottom:8px">
+          Singles competitivo multi-generacional (Gen I–IX)
+        </div>
+        <span class="champ-badge" id="cerebro-badge-champions">
+          <span class="cerebro-dot"></span> Cerebro D: verificando...
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sub-tabs -->
+  <div class="champ-tabs">
+    <button class="champ-tab active" onclick="champ__showTab('guia',this)">📋 Guía Pokémon</button>
+    <button class="champ-tab" onclick="champ__showTab('equipo',this)">🧩 Mejor Equipo</button>
+    <button class="champ-tab" onclick="champ__showTab('dano',this)">💥 Calculadora Daño</button>
+    <button class="champ-tab" onclick="champ__showTab('catalogo',this)">📖 Catálogo</button>
+  </div>
+
+  <!-- ── Guía Pokémon ── -->
+  <div id="champ__tab_guia" class="champ-card">
+    <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:#c084fc;margin-bottom:12px">
+      📋 Guía Singles — Top 3 Builds
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end">
+      <div style="flex:1;min-width:200px">
+        <label style="display:block;font-size:11px;color:var(--sub);margin-bottom:5px">Pokémon</label>
+        <input id="champ__guia_pokemon" class="champ-input" placeholder="Ej: Flutter Mane, Garchomp..." />
+      </div>
+      <button class="champ-btn" onclick="champ__generarGuia()">Generar Guía</button>
+    </div>
+    <div id="champ__guia_result" class="champ-result"></div>
+    <div style="margin-top:10px;font-size:11px;color:var(--sub)">
+      El cerebro Champions simula internamente vs 10 amenazas meta y genera los 3 mejores sets.
+    </div>
+  </div>
+
+  <!-- ── Mejor Equipo ── -->
+  <div id="champ__tab_equipo" class="champ-card" style="display:none">
+    <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:#c084fc;margin-bottom:12px">
+      🧩 Equipo de 6 — Singles Champions
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end">
+      <div style="flex:1;min-width:200px">
+        <label style="display:block;font-size:11px;color:var(--sub);margin-bottom:5px">Pokémon Ancla</label>
+        <input id="champ__equipo_ancla" class="champ-input" placeholder="Ej: Dragapult, Heatran..." />
+      </div>
+      <button class="champ-btn" onclick="champ__generarEquipo()">Armar Equipo</button>
+    </div>
+    <div id="champ__equipo_result" class="champ-result"></div>
+  </div>
+
+  <!-- ── Calculadora Daño ── -->
+  <div id="champ__tab_dano" class="champ-card" style="display:none">
+    <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:#c084fc;margin-bottom:12px">
+      💥 Calculadora de Daño — Singles Gen IX
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+      <div>
+        <label style="display:block;font-size:11px;color:var(--sub);margin-bottom:5px">Atacante</label>
+        <input id="champ__dano_atacante" class="champ-input" placeholder="Ej: Flutter Mane" />
+      </div>
+      <div>
+        <label style="display:block;font-size:11px;color:var(--sub);margin-bottom:5px">Defensor</label>
+        <input id="champ__dano_defensor" class="champ-input" placeholder="Ej: Garchomp" />
+      </div>
+      <div>
+        <label style="display:block;font-size:11px;color:var(--sub);margin-bottom:5px">Movimiento</label>
+        <input id="champ__dano_movimiento" class="champ-input" placeholder="Ej: Brillo Mágico" />
+      </div>
+      <div>
+        <label style="display:block;font-size:11px;color:var(--sub);margin-bottom:5px">Clima (opcional)</label>
+        <select id="champ__dano_clima" class="champ-input">
+          <option value="">Sin clima</option>
+          <option value="sol">Sol</option>
+          <option value="lluvia">Lluvia</option>
+          <option value="granizo">Granizo</option>
+          <option value="arena">Arena</option>
+        </select>
+      </div>
+    </div>
+    <button class="champ-btn" onclick="champ__calcularDano()">Calcular Daño</button>
+    <div id="champ__dano_result" class="champ-result"></div>
+    <div style="margin-top:8px;font-size:11px;color:var(--sub)">
+      Fórmula Gen IX · 16 rolls (85–100 %) · Sin Tera/Mega/Dynamax
+    </div>
+  </div>
+
+  <!-- ── Catálogo ── -->
+  <div id="champ__tab_catalogo" class="champ-card" style="display:none">
+    <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:#c084fc;margin-bottom:12px">
+      📖 Catálogo Champions — Tiers S / A / B
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+      <button class="champ-btn" style="font-size:11px;padding:7px 14px" onclick="champ__cargarCatalogo('S')">Tier S</button>
+      <button class="champ-btn" style="font-size:11px;padding:7px 14px;background:linear-gradient(135deg,#059669,#34d399)" onclick="champ__cargarCatalogo('A')">Tier A</button>
+      <button class="champ-btn" style="font-size:11px;padding:7px 14px;background:linear-gradient(135deg,#1d4ed8,#60a5fa)" onclick="champ__cargarCatalogo('B')">Tier B</button>
+      <button class="champ-btn" style="font-size:11px;padding:7px 14px;background:linear-gradient(135deg,#374151,#6b7280)" onclick="champ__cargarCatalogo('')">Todos</button>
+    </div>
+    <div id="champ__catalogo_result" class="champ-result"></div>
+  </div>
+</div>
+</div><!-- fin sec_champions -->
+
+<script>
+// ── Sub-tabs Champions ────────────────────────────────────────────
+function champ__showTab(id, btn) {
+  ['guia','equipo','dano','catalogo'].forEach(function(t) {
+    var el = document.getElementById('champ__tab_' + t);
+    if (el) el.style.display = t === id ? 'block' : 'none';
+  });
+  document.querySelectorAll('.champ-tab').forEach(function(b) { b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+}
+
+// ── Guía Pokémon Champions ───────────────────────────────────────
+async function champ__generarGuia() {
+  var pokemon = document.getElementById('champ__guia_pokemon').value.trim();
+  if (!pokemon) return;
+  var res = document.getElementById('champ__guia_result');
+  res.style.display = 'block';
+  res.innerHTML = '⏳ Simulando batallas internas contra amenazas meta...';
+  if (!BACKEND || !CEREBROS_ONLINE.champions) {
+    res.innerHTML = '⚡ Cerebro Champions offline. Conecta el backend para generar guías.
+Ejemplo: flutter_mane, garchomp, heatran, dragapult';
+    return;
+  }
+  try {
+    var r = await fetch(BACKEND + '/champions/guia-pokemon', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({pokemon: pokemon})
+    });
+    var d = await r.json();
+    if (!r.ok || !d.ok) { res.innerHTML = '❌ ' + (d.detail || d.errores || 'Error desconocido'); return; }
+    var data = d.data;
+    var out = '🏆 ' + data.pokemon + ' [' + data.tipos.join('/') + '] — Tier ' + data.tier + '
+';
+    out += '📐 Formato: ' + data.formato + ' · Gen ' + data.generaciones + '
+';
+    out += '🔍 Amenazas evaluadas: ' + data.amenazas_evaluadas + '
+
+';
+    data.top_builds.forEach(function(b, i) {
+      out += '── Build #' + (i+1) + ' ──────────────────────
+';
+      out += '  Naturaleza: ' + b.naturaleza + '
+';
+      out += '  Objeto: ' + b.objeto + '
+';
+      out += '  Movimientos: ' + b.movimientos.join(', ') + '
+';
+      out += '  Victorias meta: ' + b.victorias_meta + '/' + b.total_amenazas + '
+';
+      out += '  Score: ' + b.score + '
+';
+      if (b.stats_finales) {
+        var s = b.stats_finales;
+        out += '  Stats: HP ' + s.hp + ' · Atk ' + s.ataque + ' · Def ' + s.defensa;
+        out += ' · SpA ' + s.ataque_especial + ' · SpD ' + s.defensa_especial + ' · Spe ' + s.velocidad + '
+';
+      }
+      out += '
+';
+    });
+    res.innerHTML = out;
+  } catch(e) { res.innerHTML = '❌ Error de red: ' + e.message; }
+}
+
+// ── Mejor Equipo Champions ───────────────────────────────────────
+async function champ__generarEquipo() {
+  var ancla = document.getElementById('champ__equipo_ancla').value.trim();
+  if (!ancla) return;
+  var res = document.getElementById('champ__equipo_result');
+  res.style.display = 'block';
+  res.innerHTML = '⏳ Construyendo equipo con cobertura óptima...';
+  if (!BACKEND || !CEREBROS_ONLINE.champions) {
+    res.innerHTML = '⚡ Cerebro Champions offline. Conecta el backend para armar equipos.';
+    return;
+  }
+  try {
+    var r = await fetch(BACKEND + '/champions/mejor-equipo', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({pokemon_ancla: ancla})
+    });
+    var d = await r.json();
+    if (!r.ok || !d.ok) { res.innerHTML = '❌ ' + (d.detail || 'Error desconocido'); return; }
+    var data = d.data;
+    var out = '🧩 Equipo Champions Singles — ' + data.formato + '
+';
+    out += '⚓ Ancla: ' + data.ancla + '
+
+';
+    data.equipo.forEach(function(p, i) {
+      var tierColor = p.tier === 'S' ? '[S★]' : p.tier === 'A' ? '[A]' : '[B]';
+      out += (i+1) + '. ' + p.nombre + ' ' + tierColor + ' [' + p.tipos.join('/') + ']
+';
+    });
+    res.innerHTML = out;
+  } catch(e) { res.innerHTML = '❌ Error de red: ' + e.message; }
+}
+
+// ── Calculadora Daño Champions ───────────────────────────────────
+async function champ__calcularDano() {
+  var atk = document.getElementById('champ__dano_atacante').value.trim();
+  var def = document.getElementById('champ__dano_defensor').value.trim();
+  var mov = document.getElementById('champ__dano_movimiento').value.trim();
+  var clima = document.getElementById('champ__dano_clima').value;
+  if (!atk || !def || !mov) { alert('Completa los 3 campos requeridos'); return; }
+  var res = document.getElementById('champ__dano_result');
+  res.style.display = 'block';
+  res.innerHTML = '⏳ Calculando con fórmula Gen IX...';
+  if (!BACKEND || !CEREBROS_ONLINE.champions) {
+    res.innerHTML = '⚡ Cerebro Champions offline — cálculo de daño requiere el backend.';
+    return;
+  }
+  // Para llamar al endpoint de daño necesitamos los datos completos del Pokémon
+  // El backend recibe PeticionDanoChampions con atacante/defensor/movimiento full
+  // Aquí hacemos un call simplificado asumiendo stats base 100/100/100/100/100/100
+  var payload = {
+    atacante: {
+      nombre: atk, tipos: ["normal"],
+      stats_base: {hp:100,ataque:100,defensa:100,ataque_especial:100,defensa_especial:100,velocidad:100},
+      evs: {hp:0,ataque:252,defensa:0,ataque_especial:252,defensa_especial:0,velocidad:4},
+      ivs: {hp:31,ataque:31,defensa:31,ataque_especial:31,defensa_especial:31,velocidad:31},
+      naturaleza: "serio", nivel: 50
+    },
+    defensor: {
+      nombre: def, tipos: ["normal"],
+      stats_base: {hp:100,ataque:100,defensa:100,ataque_especial:100,defensa_especial:100,velocidad:100},
+      evs: {hp:252,ataque:0,defensa:4,ataque_especial:0,defensa_especial:252,velocidad:0},
+      ivs: {hp:31,ataque:31,defensa:31,ataque_especial:31,defensa_especial:31,velocidad:31},
+      naturaleza: "serio", nivel: 50
+    },
+    movimiento: mov,
+    clima: clima || null
+  };
+  try {
+    var r = await fetch(BACKEND + '/champions/dano', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    });
+    var d = await r.json();
+    if (!r.ok || !d.ok) { res.innerHTML = '❌ ' + (d.detail || 'Error'); return; }
+    var data = d.data;
+    res.innerHTML = data.detalle + '
+Daño: ' + data.dano_minimo + '–' + data.dano_maximo +
+      ' (' + data.porcentaje_min + '–' + data.porcentaje_max + ' %)' +
+      '
+Efectividad: ×' + data.efectividad +
+      ' · STAB: ' + (data.stab ? 'Sí' : 'No') +
+      '
+' + (data.ko_garantizado ? '✅ KO Garantizado' : data.posible_2hko ? '⚠️ 2HKO Posible' : '❌ No KO');
+  } catch(e) { res.innerHTML = '❌ Error de red: ' + e.message; }
+}
+
+// ── Catálogo Champions ───────────────────────────────────────────
+async function champ__cargarCatalogo(tier) {
+  var res = document.getElementById('champ__catalogo_result');
+  res.style.display = 'block';
+  res.innerHTML = '⏳ Cargando catálogo...';
+  if (!BACKEND || !CEREBROS_ONLINE.champions) {
+    res.innerHTML = '⚡ Cerebro Champions offline.
+
+Pokémon destacados (multi-generacional):
+' +
+      '[S★] Flutter Mane · Iron Bundle · Landorus-T · Heatran · Toxapex · Dragapult
+' +
+      '[A]  Garchomp · Urshifu · Volcarona · Tyranitar · Clefable · Kyurem-Black
+' +
+      '[B]  Slowbro · Magnezone · Scizor · Hawlucha · Mimikyu · Ferrothorn';
+    return;
+  }
+  try {
+    var url = BACKEND + '/champions/catalogo' + (tier ? '?tier=' + tier : '');
+    var r = await fetch(url);
+    var d = await r.json();
+    if (!r.ok) { res.innerHTML = '❌ Error cargando catálogo'; return; }
+    var data = d.data;
+    var out = '📖 Catálogo Champions' + (tier ? ' — Tier ' + tier : '') + '
+';
+    out += 'Total: ' + data.total + ' Pokémon
+
+';
+    (data.pokemon || []).forEach(function(p) {
+      var tierMark = p.tier === 'S' ? '[S★]' : p.tier === 'A' ? '[A] ' : '[B] ';
+      out += tierMark + ' ' + p.nombre + ' [' + p.tipos.join('/') + ']
+';
+    });
+    res.innerHTML = out;
+  } catch(e) { res.innerHTML = '❌ Error de red: ' + e.message; }
+}
+</script>
+
 <script>
 function __switchMode(m){
-  var g=m==="go";
-  document.getElementById("__sec_v3").style.display=g?"none":"block";
-  document.getElementById("__sec_go").style.display=g?"block":"none";
-  document.getElementById("__tab_v3").className="mode-tab"+(g?"":" on-v3");
-  document.getElementById("__tab_go").className="mode-tab"+(g?" on-go":"");
+  var isGo = m==="go", isChamp = m==="champions";
+  document.getElementById("__sec_v3").style.display=(!isGo&&!isChamp)?"block":"none";
+  document.getElementById("__sec_go").style.display=isGo?"block":"none";
+  document.getElementById("__sec_champions").style.display=isChamp?"block":"none";
+  document.getElementById("__tab_v3").className="mode-tab"+(!isGo&&!isChamp?" on-v3":"");
+  document.getElementById("__tab_go").className="mode-tab"+(isGo?" on-go":"");
+  document.getElementById("__tab_champions").className="mode-tab"+(isChamp?" on-champions":"");
   localStorage.setItem("__shieldops_mode",m);
 }
-(function(){  if(localStorage.getItem("__shieldops_mode")==="go")__switchMode("go");})();
+(function(){
+  var saved = localStorage.getItem("__shieldops_mode");
+  if(saved==="go"||saved==="champions") __switchMode(saved);
+})();
 </script>
 
 <style>
@@ -3697,12 +4074,12 @@ function __switchMode(m){
 //  Backend local (descomenta si tienes el backend corriendo en puerto 8001):
 // var BACKEND = "http://localhost:8001/api/v1";
 var BACKEND = null;
-var CEREBROS_ONLINE = {eyp: false, lza: false, go: false};
+var CEREBROS_ONLINE = {eyp: false, lza: false, go: false, champions: false};
 var CEREBROS_CHECKED = false;
 
 // ── Verificar estado de los 3 cerebros al cargar ─────────────
 async function checkCerebros() {
-  var ids = ['eyp','lza','go'];
+  var ids = ['eyp','lza','go','champions'];
   for (var i = 0; i < ids.length; i++) {
     var id = ids[i];
     var el = document.getElementById('cerebro-badge-' + id);
@@ -3733,11 +4110,11 @@ function updateBackendBar() {
   var bar = document.getElementById('cerebros-global-bar');
   if (!bar) return;
   var online = Object.values(CEREBROS_ONLINE).filter(Boolean).length;
-  var total = 3;
+  var total = 4;
   if (online === total) {
     bar.style.background = 'rgba(74,222,128,.08)';
     bar.style.borderColor = '#4ade80';
-    bar.innerHTML = '<span style="color:#4ade80;font-weight:700">✅ 3/3 Cerebros Online</span>' +
+    bar.innerHTML = '<span style="color:#4ade80;font-weight:700">✅ 4/4 Cerebros Online</span>' +
       ' <span style="color:var(--sub);font-size:10px">— Backend conectado en ' + BACKEND + '</span>';
   } else if (online === 0) {
     bar.style.background = 'rgba(34,211,238,.06)';
@@ -3751,6 +4128,144 @@ function updateBackendBar() {
       ' <span style="color:var(--sub);font-size:10px">— Algunos módulos usan cálculo local</span>';
   }
   bar.style.display = 'block';
+}
+
+
+// ── Cerebro A: EyP — guía y equipo desde el panel EyP ────────────
+async function eyp__generarGuia() {
+  var pokemon = document.getElementById('eyp__guide-pokemon').value.trim();
+  if (!pokemon) return;
+  var res = document.getElementById('eyp__cerebro-guia-result');
+  res.style.display = 'block';
+  res.innerHTML = '⏳ Simulando vs amenazas meta VGC 2026...';
+  if (!BACKEND || !CEREBROS_ONLINE.eyp) {
+    res.innerHTML = '⚡ Cerebro EyP offline — conecta el backend para generar guías.'; return;
+  }
+  try {
+    var r = await fetch(BACKEND + '/eyp/guia-pokemon', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({pokemon: pokemon})
+    });
+    var d = await r.json();
+    if (!r.ok || !d.ok) { res.innerHTML = '❌ ' + (d.detail || 'Error'); return; }
+    var data = d.data;
+    var out = '⚡ ' + data.pokemon + ' [' + (data.tipos||[]).join('/') + '] — ' + data.formato + '
+';
+    out += '🔍 Amenazas evaluadas: ' + data.amenazas_evaluadas + '
+
+';
+    (data.top_builds||[]).forEach(function(b,i){
+      out += '── Build #'+(i+1)+' ─────────────────────
+';
+      out += '  Naturaleza: '+b.naturaleza+'
+';
+      out += '  Objeto: '+b.objeto+'
+';
+      out += '  Movimientos: '+(b.movimientos||[]).join(', ')+'
+';
+      out += '  Victorias: '+b.victorias_meta+'/'+b.total_amenazas+' · Score: '+b.score+'
+
+';
+    });
+    res.innerHTML = out;
+  } catch(e) { res.innerHTML = '❌ ' + e.message; }
+}
+
+async function eyp__generarEquipo() {
+  var pokemon = document.getElementById('eyp__guide-pokemon').value.trim();
+  if (!pokemon) { alert('Escribe un Pokémon ancla primero'); return; }
+  var res = document.getElementById('eyp__cerebro-guia-result');
+  res.style.display = 'block';
+  res.innerHTML = '⏳ Construyendo equipo VGC con cobertura óptima...';
+  if (!BACKEND || !CEREBROS_ONLINE.eyp) {
+    res.innerHTML = '⚡ Cerebro EyP offline.'; return;
+  }
+  try {
+    var r = await fetch(BACKEND + '/eyp/mejor-equipo', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({pokemon_ancla: pokemon, formato: 'VGC'})
+    });
+    var d = await r.json();
+    if (!r.ok || !d.ok) { res.innerHTML = '❌ ' + (d.detail || 'Error'); return; }
+    var data = d.data;
+    var out = '⚡ Equipo VGC — Ancla: ' + data.ancla + '
+
+';
+    (data.equipo||[]).forEach(function(p,i){
+      out += (i+1)+'. '+p.nombre+' ['+p.tipos.join('/')+']'+(p.restringido?' ★':'')+'
+';
+    });
+    res.innerHTML = out;
+  } catch(e) { res.innerHTML = '❌ ' + e.message; }
+}
+
+// ── Cerebro B: LZA — guía y equipo desde el panel LZA ────────────
+async function lza__generarGuia() {
+  var pokemon = document.getElementById('lza__guide-pokemon').value.trim();
+  if (!pokemon) return;
+  var res = document.getElementById('lza__cerebro-guia-result');
+  res.style.display = 'block';
+  res.innerHTML = '⏳ Simulando Action Time vs amenazas meta LZA...';
+  if (!BACKEND || !CEREBROS_ONLINE.lza) {
+    res.innerHTML = '⚡ Cerebro LZA offline — conecta el backend para generar guías.'; return;
+  }
+  try {
+    var r = await fetch(BACKEND + '/lza/guia-pokemon', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({pokemon: pokemon})
+    });
+    var d = await r.json();
+    if (!r.ok || !d.ok) { res.innerHTML = '❌ ' + (d.detail || 'Error'); return; }
+    var data = d.data;
+    var out = '✦ ' + data.pokemon + ' [' + (data.tipos||[]).join('/') + ']
+';
+    out += '🔍 Amenazas evaluadas: ' + (data.amenazas_evaluadas||'-') + '
+
+';
+    (data.top_builds||[]).forEach(function(b,i){
+      out += '── Build #'+(i+1)+' ─────────────────────
+';
+      out += '  Objeto: '+b.objeto+'
+';
+      out += '  Movimientos: '+(b.movimientos||[]).join(', ')+'
+';
+      out += '  Victorias: '+b.victorias_meta+'/'+b.total_amenazas+' · Score: '+b.score+'
+';
+      if(b.mega_activa) out += '  ✦ Mega Evolution activa
+';
+      out += '
+';
+    });
+    res.innerHTML = out;
+  } catch(e) { res.innerHTML = '❌ ' + e.message; }
+}
+
+async function lza__generarEquipo() {
+  var pokemon = document.getElementById('lza__guide-pokemon').value.trim();
+  if (!pokemon) { alert('Escribe un Pokémon ancla primero'); return; }
+  var res = document.getElementById('lza__cerebro-guia-result');
+  res.style.display = 'block';
+  res.innerHTML = '⏳ Construyendo equipo Battle Club con cobertura óptima...';
+  if (!BACKEND || !CEREBROS_ONLINE.lza) {
+    res.innerHTML = '⚡ Cerebro LZA offline.'; return;
+  }
+  try {
+    var r = await fetch(BACKEND + '/lza/mejor-equipo', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({pokemon_ancla: pokemon})
+    });
+    var d = await r.json();
+    if (!r.ok || !d.ok) { res.innerHTML = '❌ ' + (d.detail || 'Error'); return; }
+    var data = d.data;
+    var out = '✦ Equipo Battle Club — Ancla: ' + data.ancla + '
+
+';
+    (data.equipo||[]).forEach(function(p,i){
+      out += (i+1)+'. '+p.nombre+' ['+p.tipos.join('/')+']'+(p.puede_mega?' (Mega)':'')+'
+';
+    });
+    res.innerHTML = out;
+  } catch(e) { res.innerHTML = '❌ ' + e.message; }
 }
 
 // ── Cerebro A: EyP — enriquece el cálculo de daño ────────────
