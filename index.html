@@ -360,6 +360,22 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;
       </div>
     </div>
   </div>
+
+  <!-- ── Cerebro A: Guía y Equipo ── -->
+  <div class="card" style="margin-top:16px;border-color:rgba(249,115,22,.3)">
+    <div class="sec" style="color:var(--eyp)">🧠 Cerebro EyP — Guía &amp; Equipo VGC</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;align-items:flex-end">
+      <div style="flex:1;min-width:180px">
+        <label class="fl">Pokémon</label>
+        <input id="eyp__guide-pokemon" placeholder="ej: Flutter Mane, Miraidon..." style="font-size:13px;padding:9px 12px">
+      </div>
+      <button class="btn eyp" style="font-size:12px;padding:9px 16px" onclick="eyp__generarGuia()">Guía del cerebro</button>
+      <button class="btn sm" style="font-size:12px;padding:9px 16px" onclick="eyp__generarEquipo()">Mejor equipo</button>
+    </div>
+    <div id="eyp__cerebro-guia-result" style="display:none;margin-top:10px;padding:12px;background:rgba(249,115,22,.05);border:1px solid rgba(249,115,22,.2);border-radius:8px;font-size:11px;font-family:var(--mono);white-space:pre-wrap;line-height:1.6"></div>
+    <div style="font-size:10px;color:var(--dim);margin-top:6px">Simula vs 10 amenazas meta VGC 2026 — requiere backend online</div>
+  </div>
+
 </div>
 
 
@@ -426,6 +442,22 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;
       </div>
     </div>
   </div>
+
+  <!-- ── Cerebro B: Guía y Equipo ── -->
+  <div class="card" style="margin-top:16px;border-color:rgba(167,139,250,.3)">
+    <div class="sec" style="color:var(--lza)">🧠 Cerebro LZA — Guía &amp; Equipo Battle Club</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;align-items:flex-end">
+      <div style="flex:1;min-width:180px">
+        <label class="fl">Pokémon</label>
+        <input id="lza__guide-pokemon" placeholder="ej: Garchomp, Mega-Lucario..." style="font-size:13px;padding:9px 12px">
+      </div>
+      <button class="btn lza" style="font-size:12px;padding:9px 16px" onclick="lza__generarGuia()">Guía del cerebro</button>
+      <button class="btn sm" style="font-size:12px;padding:9px 16px" onclick="lza__generarEquipo()">Mejor equipo</button>
+    </div>
+    <div id="lza__cerebro-guia-result" style="display:none;margin-top:10px;padding:12px;background:rgba(167,139,250,.05);border:1px solid rgba(167,139,250,.2);border-radius:8px;font-size:11px;font-family:var(--mono);white-space:pre-wrap;line-height:1.6"></div>
+    <div style="font-size:10px;color:var(--dim);margin-top:6px">Simula Action Time vs amenazas meta LZA — requiere backend online</div>
+  </div>
+
 </div>
 
 
@@ -549,6 +581,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;
         <select id="g-game-auto" style="font-size:13px;padding:10px 12px">
           <option value="lza">🔮 Leyendas Z-A — Battle Club S7</option>
           <option value="eyp">⚡ Escarlata/Púrpura — VGC 2026 Reg F</option>
+          <option value="champions">🏆 Champions — Singles Multi-Gen</option>
         </select>
         <label class="fl">Nivel <span style="color:var(--dim)">(ajusta el lenguaje de la guía)</span></label>
         <select id="g-level-auto" style="font-size:13px;padding:10px 12px">
@@ -574,6 +607,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;
         <select id="g-game-exp">
           <option value="lza">🔮 Leyendas Z-A — Battle Club S7</option>
           <option value="eyp">⚡ Escarlata/Púrpura — VGC 2026 Reg F</option>
+          <option value="champions">🏆 Champions — Singles Multi-Gen</option>
         </select>
         <div class="row2" style="margin-top:0">
           <div>
@@ -2205,9 +2239,11 @@ async function genGuide(mode){
     game  = document.getElementById('g-game-auto').value;
     const lvl = document.getElementById('g-level-auto').value;
     const btn = document.getElementById('g-btn-auto');
-    gameLabel = game === 'lza' ? 'Leyendas Z-A (LZA)' : 'Escarlata/Púrpura (EyP)';
+    gameLabel = game === 'lza' ? 'Leyendas Z-A (LZA)' : game === 'champions' ? 'Pokémon Champions (Singles Multi-Gen)' : 'Escarlata/Púrpura (EyP)';
     fmtLabel  = game === 'lza'
       ? 'LZA Battle Club Season 7 — Battle Royale, Nivel 50, 1 Mega por batalla'
+      : game === 'champions'
+      ? 'Champions Singles — Gen I-IX, Nivel 50-100, sin Tera/Mega/Dynamax'
       : 'VGC 2026 Regulation F — Dobles, Nivel 50, 6 Pokémon / 4 seleccionados';
 
     const lvlCtx = lvl === 'beginner'
@@ -2327,9 +2363,11 @@ Sé MUY específico. Nombres reales de NPCs, ubicaciones, costos en monedas.`;
     const item  = document.getElementById('g-item-exp').value.trim();
     const btn   = document.getElementById('g-btn-exp');
 
-    gameLabel = game === 'lza' ? 'Leyendas Z-A (LZA)' : 'Escarlata/Púrpura (EyP)';
+    gameLabel = game === 'lza' ? 'Leyendas Z-A (LZA)' : game === 'champions' ? 'Pokémon Champions (Singles Multi-Gen)' : 'Escarlata/Púrpura (EyP)';
     fmtLabel  = game === 'lza'
       ? 'LZA Battle Club Season 7 — Battle Royale, Nivel 50'
+      : game === 'champions'
+      ? 'Champions Singles — Gen I-IX, sin Tera/Mega/Dynamax'
       : 'VGC 2026 Regulation F — Dobles, Nivel 50';
 
     btn.disabled = true;
@@ -4090,6 +4128,144 @@ function updateBackendBar() {
       ' <span style="color:var(--sub);font-size:10px">— Algunos módulos usan cálculo local</span>';
   }
   bar.style.display = 'block';
+}
+
+
+// ── Cerebro A: EyP — guía y equipo desde el panel EyP ────────────
+async function eyp__generarGuia() {
+  var pokemon = document.getElementById('eyp__guide-pokemon').value.trim();
+  if (!pokemon) return;
+  var res = document.getElementById('eyp__cerebro-guia-result');
+  res.style.display = 'block';
+  res.innerHTML = '⏳ Simulando vs amenazas meta VGC 2026...';
+  if (!BACKEND || !CEREBROS_ONLINE.eyp) {
+    res.innerHTML = '⚡ Cerebro EyP offline — conecta el backend para generar guías.'; return;
+  }
+  try {
+    var r = await fetch(BACKEND + '/eyp/guia-pokemon', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({pokemon: pokemon})
+    });
+    var d = await r.json();
+    if (!r.ok || !d.ok) { res.innerHTML = '❌ ' + (d.detail || 'Error'); return; }
+    var data = d.data;
+    var out = '⚡ ' + data.pokemon + ' [' + (data.tipos||[]).join('/') + '] — ' + data.formato + '
+';
+    out += '🔍 Amenazas evaluadas: ' + data.amenazas_evaluadas + '
+
+';
+    (data.top_builds||[]).forEach(function(b,i){
+      out += '── Build #'+(i+1)+' ─────────────────────
+';
+      out += '  Naturaleza: '+b.naturaleza+'
+';
+      out += '  Objeto: '+b.objeto+'
+';
+      out += '  Movimientos: '+(b.movimientos||[]).join(', ')+'
+';
+      out += '  Victorias: '+b.victorias_meta+'/'+b.total_amenazas+' · Score: '+b.score+'
+
+';
+    });
+    res.innerHTML = out;
+  } catch(e) { res.innerHTML = '❌ ' + e.message; }
+}
+
+async function eyp__generarEquipo() {
+  var pokemon = document.getElementById('eyp__guide-pokemon').value.trim();
+  if (!pokemon) { alert('Escribe un Pokémon ancla primero'); return; }
+  var res = document.getElementById('eyp__cerebro-guia-result');
+  res.style.display = 'block';
+  res.innerHTML = '⏳ Construyendo equipo VGC con cobertura óptima...';
+  if (!BACKEND || !CEREBROS_ONLINE.eyp) {
+    res.innerHTML = '⚡ Cerebro EyP offline.'; return;
+  }
+  try {
+    var r = await fetch(BACKEND + '/eyp/mejor-equipo', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({pokemon_ancla: pokemon, formato: 'VGC'})
+    });
+    var d = await r.json();
+    if (!r.ok || !d.ok) { res.innerHTML = '❌ ' + (d.detail || 'Error'); return; }
+    var data = d.data;
+    var out = '⚡ Equipo VGC — Ancla: ' + data.ancla + '
+
+';
+    (data.equipo||[]).forEach(function(p,i){
+      out += (i+1)+'. '+p.nombre+' ['+p.tipos.join('/')+']'+(p.restringido?' ★':'')+'
+';
+    });
+    res.innerHTML = out;
+  } catch(e) { res.innerHTML = '❌ ' + e.message; }
+}
+
+// ── Cerebro B: LZA — guía y equipo desde el panel LZA ────────────
+async function lza__generarGuia() {
+  var pokemon = document.getElementById('lza__guide-pokemon').value.trim();
+  if (!pokemon) return;
+  var res = document.getElementById('lza__cerebro-guia-result');
+  res.style.display = 'block';
+  res.innerHTML = '⏳ Simulando Action Time vs amenazas meta LZA...';
+  if (!BACKEND || !CEREBROS_ONLINE.lza) {
+    res.innerHTML = '⚡ Cerebro LZA offline — conecta el backend para generar guías.'; return;
+  }
+  try {
+    var r = await fetch(BACKEND + '/lza/guia-pokemon', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({pokemon: pokemon})
+    });
+    var d = await r.json();
+    if (!r.ok || !d.ok) { res.innerHTML = '❌ ' + (d.detail || 'Error'); return; }
+    var data = d.data;
+    var out = '✦ ' + data.pokemon + ' [' + (data.tipos||[]).join('/') + ']
+';
+    out += '🔍 Amenazas evaluadas: ' + (data.amenazas_evaluadas||'-') + '
+
+';
+    (data.top_builds||[]).forEach(function(b,i){
+      out += '── Build #'+(i+1)+' ─────────────────────
+';
+      out += '  Objeto: '+b.objeto+'
+';
+      out += '  Movimientos: '+(b.movimientos||[]).join(', ')+'
+';
+      out += '  Victorias: '+b.victorias_meta+'/'+b.total_amenazas+' · Score: '+b.score+'
+';
+      if(b.mega_activa) out += '  ✦ Mega Evolution activa
+';
+      out += '
+';
+    });
+    res.innerHTML = out;
+  } catch(e) { res.innerHTML = '❌ ' + e.message; }
+}
+
+async function lza__generarEquipo() {
+  var pokemon = document.getElementById('lza__guide-pokemon').value.trim();
+  if (!pokemon) { alert('Escribe un Pokémon ancla primero'); return; }
+  var res = document.getElementById('lza__cerebro-guia-result');
+  res.style.display = 'block';
+  res.innerHTML = '⏳ Construyendo equipo Battle Club con cobertura óptima...';
+  if (!BACKEND || !CEREBROS_ONLINE.lza) {
+    res.innerHTML = '⚡ Cerebro LZA offline.'; return;
+  }
+  try {
+    var r = await fetch(BACKEND + '/lza/mejor-equipo', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({pokemon_ancla: pokemon})
+    });
+    var d = await r.json();
+    if (!r.ok || !d.ok) { res.innerHTML = '❌ ' + (d.detail || 'Error'); return; }
+    var data = d.data;
+    var out = '✦ Equipo Battle Club — Ancla: ' + data.ancla + '
+
+';
+    (data.equipo||[]).forEach(function(p,i){
+      out += (i+1)+'. '+p.nombre+' ['+p.tipos.join('/')+']'+(p.puede_mega?' (Mega)':'')+'
+';
+    });
+    res.innerHTML = out;
+  } catch(e) { res.innerHTML = '❌ ' + e.message; }
 }
 
 // ── Cerebro A: EyP — enriquece el cálculo de daño ────────────
