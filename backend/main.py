@@ -1,18 +1,23 @@
 """
 main.py — Punto de entrada de ShieldOps Backend.
 
-Monta los 3 cerebros como routers independientes bajo /api/v1/.
+Monta los 4 cerebros como routers independientes bajo /api/v1/.
 Cada cerebro tiene su propio prefijo y no comparte estado con los otros.
 
 Endpoints disponibles:
-  GET  /api/v1/health           → Estado de los 3 cerebros
-  POST /api/v1/eyp/dano         → Motor daño EyP (Gen IX, 16 rolls)
+  GET  /api/v1/health               → Estado de los 4 cerebros
+  POST /api/v1/eyp/dano             → Motor daño EyP (Gen IX, 16 rolls)
   POST /api/v1/eyp/validar-equipo
-  POST /api/v1/lza/dano         → Motor daño LZA (Action Time, sin habilidades)
+  POST /api/v1/eyp/guia-pokemon
+  POST /api/v1/lza/dano             → Motor daño LZA (Action Time, sin habilidades)
   POST /api/v1/lza/validar-combate
-  POST /api/v1/go/dano          → Motor daño GO (STAB x1.2, inmune x0.391)
-  POST /api/v1/go/cp            → Calcula CP y nivel óptimo por liga
-  POST /api/v1/go/validar-equipo
+  POST /api/v1/lza/guia-pokemon
+  POST /api/v1/go/dano              → Motor daño GO (STAB x1.2, inmune x0.391)
+  POST /api/v1/go/cp                → Calcula CP y nivel óptimo por liga
+  POST /api/v1/go/guia-pokemon
+  POST /api/v1/champions/dano       → Motor daño Champions (Singles Gen IX)
+  POST /api/v1/champions/guia-pokemon
+  POST /api/v1/champions/mejor-equipo
 """
 from __future__ import annotations
 import sys
@@ -24,17 +29,19 @@ sys.path.insert(0, os.path.dirname(__file__))
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from core.types import APIResponse
-from cerebros.eyp.api.router import router as eyp_router
-from cerebros.lza.api.router import router as lza_router
-from cerebros.go.api.router  import router as go_router
+from cerebros.eyp.api.router       import router as eyp_router
+from cerebros.lza.api.router       import router as lza_router
+from cerebros.go.api.router        import router as go_router
+from cerebros.champions.api.router import router as champions_router
 
 app = FastAPI(
-    title="ShieldOps Backend — 3 Cerebros Pokémon",
+    title="ShieldOps Backend — 4 Cerebros Pokémon",
     description=(
         "Motor de cálculo competitivo para Escarlata/Púrpura (VGC), "
-        "Leyendas Z-A (Action Time PvP) y Pokémon GO (GO Battle League)."
+        "Leyendas Z-A (Action Time PvP), Pokémon GO (GO Battle League) "
+        "y Pokémon Champions (Singles multi-generacional)."
     ),
-    version="1.0.0",
+    version="2.0.0",
     docs_url="/docs",
     redoc_url="/redoc",
 )
@@ -47,27 +54,29 @@ app.add_middleware(
     allow_headers=["Content-Type", "Authorization"],
 )
 
-# Montar los 3 cerebros como routers independientes
+# Montar los 4 cerebros como routers independientes
 API_V1 = "/api/v1"
-app.include_router(eyp_router, prefix=API_V1)
-app.include_router(lza_router, prefix=API_V1)
-app.include_router(go_router,  prefix=API_V1)
+app.include_router(eyp_router,       prefix=API_V1)
+app.include_router(lza_router,       prefix=API_V1)
+app.include_router(go_router,        prefix=API_V1)
+app.include_router(champions_router, prefix=API_V1)
 
 
 @app.get("/", tags=["Sistema"])
 async def root() -> dict:
-    return {"message": "ShieldOps Backend", "version": "1.0.0", "endpoints": ["/api/v1/health", "/docs"]}
+    return {"message": "ShieldOps Backend", "version": "2.0.0", "endpoints": ["/api/v1/health", "/docs"]}
 
 @app.get(f"{API_V1}/health", response_model=dict, tags=["Sistema"])
 async def health_global() -> dict:
-    """Estado global — consulta los 3 cerebros."""
+    """Estado global — consulta los 4 cerebros."""
     return {
         "sistema": "ShieldOps Backend",
-        "version": "1.0.0",
+        "version": "2.0.0",
         "cerebros": {
-            "eyp": {"nombre": "Escarlata/Púrpura VGC", "ruta": f"{API_V1}/eyp"},
-            "lza": {"nombre": "Leyendas Z-A Action PvP", "ruta": f"{API_V1}/lza"},
-            "go":  {"nombre": "Pokémon GO Battle League", "ruta": f"{API_V1}/go"},
+            "eyp":       {"nombre": "Escarlata/Púrpura VGC",         "ruta": f"{API_V1}/eyp"},
+            "lza":       {"nombre": "Leyendas Z-A Action PvP",       "ruta": f"{API_V1}/lza"},
+            "go":        {"nombre": "Pokémon GO Battle League",       "ruta": f"{API_V1}/go"},
+            "champions": {"nombre": "Pokémon Champions Singles",      "ruta": f"{API_V1}/champions"},
         },
         "docs": "/docs",
     }
