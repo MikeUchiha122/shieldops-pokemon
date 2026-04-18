@@ -18,6 +18,10 @@ from cerebros.champions.data.movimientos import MOVIMIENTOS_CHAMPIONS
 from cerebros.champions.data.objetos import (
     OBJETOS_CHAMPIONS, listar_megapiedras_champions,
 )
+from cerebros.champions.data.habilidades import (
+    HABILIDADES_CHAMPIONS, buscar_habilidad_champions,
+)
+from cerebros.champions.data.entrenamiento import REGLAS_ENTRENAMIENTO_CHAMPIONS
 
 router = APIRouter(prefix="/champions", tags=["Cerebro D — Pokémon Champions"])
 _VERSION = "1.0.0"
@@ -171,6 +175,62 @@ def endpoint_megapiedras() -> APIResponse:
     )
 
 
+@router.get(
+    "/habilidades",
+    response_model=APIResponse,
+    summary="Lista las habilidades disponibles en Pokemon Champions",
+)
+def endpoint_habilidades(q: str | None = None) -> APIResponse:
+    """
+    Devuelve el catalogo de habilidades (Intimidacion, Libero, Protosintesis, etc.).
+    Si `q` se proporciona, filtra por nombre (substring, case-insensitive).
+    """
+    q_low = q.lower() if q else None
+    resultado = [
+        {"id": k, "nombre": v["nombre"], "descripcion": v["descripcion"]}
+        for k, v in HABILIDADES_CHAMPIONS.items()
+        if not q_low or q_low in v["nombre"].lower() or q_low in k
+    ]
+    return APIResponse(
+        cerebro="champions", version=_VERSION, ok=True,
+        data={"total": len(resultado), "query": q, "habilidades": resultado},
+    )
+
+
+@router.get(
+    "/habilidad/{nombre}",
+    response_model=APIResponse,
+    summary="Detalle de una habilidad especifica",
+)
+def endpoint_habilidad_detalle(nombre: str) -> APIResponse:
+    hab = buscar_habilidad_champions(nombre)
+    if not hab:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Habilidad '{nombre}' no encontrada en el catalogo Champions",
+        )
+    return APIResponse(cerebro="champions", version=_VERSION, ok=True, data=hab)
+
+
+@router.get(
+    "/entrenamiento",
+    response_model=APIResponse,
+    summary="Reglas de entrenamiento de Pokemon Champions (EVs/IVs/nivel/PV)",
+)
+def endpoint_entrenamiento() -> APIResponse:
+    """
+    Reglas especificas de Pokemon Champions segun la guia oficial (Vandal):
+    - Nivel fijo 50, sin experiencia.
+    - No hay IVs (todos al maximo 31 por defecto).
+    - EVs: max 32 por stat, 66 totales (no 252/508 como main series).
+    - Cambios via Puntos de Victoria: EV=5 PV, naturaleza=500 PV, habilidad=500 PV, movimiento=250 PV.
+    """
+    return APIResponse(
+        cerebro="champions", version=_VERSION, ok=True,
+        data=REGLAS_ENTRENAMIENTO_CHAMPIONS,
+    )
+
+
 @router.get("/health", response_model=APIResponse)
 def health() -> APIResponse:
     return APIResponse(
@@ -183,6 +243,14 @@ def health() -> APIResponse:
             "total_movimientos": len(MOVIMIENTOS_CHAMPIONS),
             "total_objetos": len(OBJETOS_CHAMPIONS),
             "total_megapiedras": len(listar_megapiedras_champions()),
+            "total_habilidades": len(HABILIDADES_CHAMPIONS),
+            "reglas_entrenamiento": {
+                "nivel_fijo": REGLAS_ENTRENAMIENTO_CHAMPIONS["nivel"]["fijo"],
+                "ivs_activos": REGLAS_ENTRENAMIENTO_CHAMPIONS["ivs"]["activos"],
+                "ev_max_stat": REGLAS_ENTRENAMIENTO_CHAMPIONS["evs"]["max_por_stat"],
+                "ev_max_total": REGLAS_ENTRENAMIENTO_CHAMPIONS["evs"]["max_total"],
+                "moneda": REGLAS_ENTRENAMIENTO_CHAMPIONS["moneda_entrenamiento"],
+            },
             "formula_dano": "Gen IX estándar (16 rolls, 85–100 %)",
             "tabla_tipos": "×2.0 / ×0.5 / ×0.0 (main series estándar)",
             "mecanicas_excluidas": ["Tera", "Dynamax", "Z-Moves"],
@@ -190,6 +258,7 @@ def health() -> APIResponse:
             "endpoints": ["/champions/dano", "/champions/guia-pokemon",
                           "/champions/mejor-equipo", "/champions/catalogo",
                           "/champions/movimientos", "/champions/objetos",
-                          "/champions/megapiedras"],
+                          "/champions/megapiedras", "/champions/habilidades",
+                          "/champions/habilidad/{nombre}", "/champions/entrenamiento"],
         },
     )

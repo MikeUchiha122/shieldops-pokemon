@@ -7,7 +7,7 @@ Motor de calculo competitivo para los 4 juegos de Pokemon activos en 2026.
 | **A — EyP** | Escarlata / Purpura | VGC 2026 Reg F (Dobles) | Gen IX, 16 rolls, EVs/IVs/Natures |
 | **B — LZA** | Leyendas Z-A | Battle Club S7 (Action PvP) | startup_frames, cooldown_ms, Mega |
 | **C — GO** | Pokemon GO | GO Battle League S26 | CP, IVs 0-15, x1.6/x0.625/x0.391 |
-| **D — Champions** | Pokemon Champions | Singles multi-gen (Gen I-IX) | formula Gen IX, sin Tera/Mega/Dmax |
+| **D — Champions** | Pokemon Champions | Singles multi-gen nivel 50 | EVs 32/66, sin IVs, PV, formula Gen IX |
 
 ---
 
@@ -95,6 +95,9 @@ Swagger UI completo: http://localhost:8001/docs
 | GET | /api/v1/champions/movimientos | Champions | Movimientos por tipo |
 | GET | /api/v1/champions/objetos | Champions | Objetos competitivos (138 total, filtro por tipo/efecto) |
 | GET | /api/v1/champions/megapiedras | Champions | 64 megapiedras (Venusaurita, Lucarionita, etc.) |
+| GET | /api/v1/champions/habilidades | Champions | 168 habilidades (filtro por `?q=`) |
+| GET | /api/v1/champions/habilidad/{nombre} | Champions | Detalle de una habilidad |
+| GET | /api/v1/champions/entrenamiento | Champions | Reglas EV/IV/nivel/PV de Champions |
 
 ---
 
@@ -106,9 +109,27 @@ Swagger UI completo: http://localhost:8001/docs
 | Super efectivo | x2.0 | x1.6 |
 | Poco efectivo | x0.5 | x0.625 |
 | Inmune | x0.0 | x0.391 |
-| IVs | 0–31 | 0–15 |
+| IVs | 0–31 (Champions: fijos 31, no configurables) | 0–15 |
+| EVs por stat | 252 (main) / **32 (Champions)** | N/A |
+| EVs totales | 508 (main) / **66 (Champions)** | N/A |
 | Nivel | 50 (competitivo) | 1–51 |
 | Equipo | 6 Pokemon | 3 Pokemon |
+
+### Sistema de entrenamiento Pokemon Champions (especifico)
+
+Champions NO usa el sistema clasico de IVs/EVs/niveles. Sus reglas (via guia
+oficial Vandal):
+
+- **Nivel fijo 50** — no hay experiencia.
+- **IVs** — no existen; se considera que todos parten a 31.
+- **EVs** — max 32 por stat, max 66 totales (no 252/508).
+- **Moneda** — Puntos de Victoria (PV) por combate.
+- **Costes PV**: 5 PV/EV · 250 PV/movimiento · 500 PV/habilidad · 500 PV/naturaleza.
+- Inversion total para los 66 EV maximos: **330 PV**.
+
+El schema Pydantic del backend mantiene compatibilidad main series (EV 0–252,
+IV 0–31) para que el motor de dano funcione con ambos sistemas; las reglas
+Champions se exponen en `/api/v1/champions/entrenamiento`.
 
 ### Mega Evolucion
 
