@@ -110,9 +110,17 @@ Swagger UI completo: http://localhost:8001/docs
 
 ### Mega Evolucion
 
-Solo el cerebro **LZA** soporta Mega Evolucion (1 Mega por combate, altera tipos y stats).
-Champions es Singles sin Tera/Mega/Dmax por diseño, por lo que **Mega-Lucario solo existe en LZA**
-(Lucario esta en `/lza/catalogo` con `puede_mega: true`).
+**Pokemon Champions SI incluye Mega Evoluciones** (~60 Megas segun WikiDex v1.0.2,
+8-abr-2026): Mega-Lucario, Mega-Charizard X/Y, Mega-Mewtwo, Mega-Gengar,
+Mega-Garchomp, etc. Fuente:
+https://www.wikidex.net/wiki/Lista_de_Pok%C3%A9mon_de_Pok%C3%A9mon_Champions
+
+**LZA** tambien soporta Mega Evolucion (1 Mega por combate, altera tipos y stats).
+
+**Estado del catalogo backend (v2):** el catalogo Champions actual (`data/pokemon.py`)
+es un subconjunto reducido de 23 Pokemon sin Megas — pendiente de expandir para
+cubrir el roster completo de Champions. `/lza/catalogo` ya expone Lucario con
+`puede_mega: true` y 22 Megas mas.
 
 ---
 
