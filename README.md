@@ -93,6 +93,8 @@ Swagger UI completo: http://localhost:8001/docs
 | POST | /api/v1/champions/mejor-equipo | Champions | Equipo de 6 alrededor de un ancla |
 | GET | /api/v1/champions/catalogo | Champions | Catalogo por tier (S/A/B) |
 | GET | /api/v1/champions/movimientos | Champions | Movimientos por tipo |
+| GET | /api/v1/champions/objetos | Champions | Objetos competitivos (138 total, filtro por tipo/efecto) |
+| GET | /api/v1/champions/megapiedras | Champions | 64 megapiedras (Venusaurita, Lucarionita, etc.) |
 
 ---
 

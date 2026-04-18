@@ -15,6 +15,9 @@ from cerebros.champions.data.pokemon import (
     POKEMON_CHAMPIONS, buscar_pokemon_champions,
 )
 from cerebros.champions.data.movimientos import MOVIMIENTOS_CHAMPIONS
+from cerebros.champions.data.objetos import (
+    OBJETOS_CHAMPIONS, listar_megapiedras_champions,
+)
 
 router = APIRouter(prefix="/champions", tags=["Cerebro D — Pokémon Champions"])
 _VERSION = "1.0.0"
@@ -124,6 +127,50 @@ def endpoint_movimientos(tipo: str | None = None) -> APIResponse:
     )
 
 
+@router.get(
+    "/objetos",
+    response_model=APIResponse,
+    summary="Lista los objetos competitivos disponibles en Champions",
+)
+def endpoint_objetos(tipo: str | None = None, efecto: str | None = None) -> APIResponse:
+    """Filtra por `tipo` (si el objeto tiene campo tipo) o por `efecto` (megapiedra, tipo_boost, cura_estado, etc.)."""
+    resultado = []
+    for clave, obj in OBJETOS_CHAMPIONS.items():
+        if tipo and obj.get("tipo") != tipo.lower():
+            continue
+        if efecto and obj.get("efecto") != efecto.lower():
+            continue
+        resultado.append({
+            "id": clave,
+            "nombre": obj["nombre"],
+            "efecto": obj.get("efecto", "?"),
+            "tipo": obj.get("tipo"),
+            "descripcion": obj.get("descripcion", ""),
+        })
+    return APIResponse(
+        cerebro="champions", version=_VERSION, ok=True,
+        data={"total": len(resultado), "tipo_filtro": tipo, "efecto_filtro": efecto,
+              "objetos": resultado},
+    )
+
+
+@router.get(
+    "/megapiedras",
+    response_model=APIResponse,
+    summary="Lista las 64 megapiedras disponibles en Pokemon Champions",
+)
+def endpoint_megapiedras() -> APIResponse:
+    """
+    Cada megapiedra desbloquea la Mega Evolucion del Pokemon indicado.
+    Fuente: Vandal/Eurogamer (Pokemon Champions abril 2026).
+    """
+    megas = listar_megapiedras_champions()
+    return APIResponse(
+        cerebro="champions", version=_VERSION, ok=True,
+        data={"total": len(megas), "megapiedras": megas},
+    )
+
+
 @router.get("/health", response_model=APIResponse)
 def health() -> APIResponse:
     return APIResponse(
@@ -134,12 +181,15 @@ def health() -> APIResponse:
             "generaciones": "I–IX",
             "total_pokemon": len(POKEMON_CHAMPIONS),
             "total_movimientos": len(MOVIMIENTOS_CHAMPIONS),
+            "total_objetos": len(OBJETOS_CHAMPIONS),
+            "total_megapiedras": len(listar_megapiedras_champions()),
             "formula_dano": "Gen IX estándar (16 rolls, 85–100 %)",
             "tabla_tipos": "×2.0 / ×0.5 / ×0.0 (main series estándar)",
             "mecanicas_excluidas": ["Tera", "Dynamax", "Z-Moves"],
             "nota_mega": "Pokemon Champions incluye ~60 Megas (Mega-Lucario, Mega-Charizard X/Y, etc.). Catalogo backend expandido a ~205 Pokemon base + ~64 Megas via WikiDex. Megas canonicas Gen VI/VII usan stats oficiales; Megas exclusivas Champions llevan flag `mega_speculado=True`.",
             "endpoints": ["/champions/dano", "/champions/guia-pokemon",
                           "/champions/mejor-equipo", "/champions/catalogo",
-                          "/champions/movimientos"],
+                          "/champions/movimientos", "/champions/objetos",
+                          "/champions/megapiedras"],
         },
     )
