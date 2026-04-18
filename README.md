@@ -92,7 +92,7 @@ Swagger UI completo: http://localhost:8001/docs
 | POST | /api/v1/champions/guia-pokemon | Champions | Top 3 builds Singles multi-gen |
 | POST | /api/v1/champions/mejor-equipo | Champions | Equipo de 6 alrededor de un ancla |
 | GET | /api/v1/champions/catalogo | Champions | Catalogo por tier (S/A/B) |
-| GET | /api/v1/champions/movimientos | Champions | Movimientos por tipo |
+| GET | /api/v1/champions/movimientos | Champions | Movimientos por tipo (378 total, fuente op.gg) |
 | GET | /api/v1/champions/objetos | Champions | Objetos competitivos (138 total, filtro por tipo/efecto) |
 | GET | /api/v1/champions/megapiedras | Champions | 64 megapiedras (Venusaurita, Lucarionita, etc.) |
 | GET | /api/v1/champions/habilidades | Champions | 168 habilidades (filtro por `?q=`) |
@@ -130,6 +130,11 @@ oficial Vandal):
 El schema Pydantic del backend mantiene compatibilidad main series (EV 0–252,
 IV 0–31) para que el motor de dano funcione con ambos sistemas; las reglas
 Champions se exponen en `/api/v1/champions/entrenamiento`.
+
+**Catalogos Champions (v3.1):** 269 Pokemon (205 base + 64 Megas), 378
+movimientos, 138 objetos (incluye 64 megapiedras), 168 habilidades. Fuentes:
+WikiDex (Pokemon/Megas), op.gg (movimientos/habilidades), Eurogamer/Vandal
+(objetos/megapiedras/reglas de entrenamiento).
 
 ### Mega Evolucion
 
