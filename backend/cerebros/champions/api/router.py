@@ -137,7 +137,7 @@ def health() -> APIResponse:
             "formula_dano": "Gen IX estándar (16 rolls, 85–100 %)",
             "tabla_tipos": "×2.0 / ×0.5 / ×0.0 (main series estándar)",
             "mecanicas_excluidas": ["Tera", "Dynamax", "Z-Moves"],
-            "nota_mega": "Pokemon Champions incluye ~60 Megas (Mega-Lucario, Mega-Charizard X/Y, etc.); el catalogo backend actual es un subconjunto reducido sin Megas, pendiente de expandir.",
+            "nota_mega": "Pokemon Champions incluye ~60 Megas (Mega-Lucario, Mega-Charizard X/Y, etc.). Catalogo backend expandido a ~205 Pokemon base + ~64 Megas via WikiDex. Megas canonicas Gen VI/VII usan stats oficiales; Megas exclusivas Champions llevan flag `mega_speculado=True`.",
             "endpoints": ["/champions/dano", "/champions/guia-pokemon",
                           "/champions/mejor-equipo", "/champions/catalogo",
                           "/champions/movimientos"],

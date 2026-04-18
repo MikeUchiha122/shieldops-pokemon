@@ -117,10 +117,14 @@ https://www.wikidex.net/wiki/Lista_de_Pok%C3%A9mon_de_Pok%C3%A9mon_Champions
 
 **LZA** tambien soporta Mega Evolucion (1 Mega por combate, altera tipos y stats).
 
-**Estado del catalogo backend (v2):** el catalogo Champions actual (`data/pokemon.py`)
-es un subconjunto reducido de 23 Pokemon sin Megas — pendiente de expandir para
-cubrir el roster completo de Champions. `/lza/catalogo` ya expone Lucario con
-`puede_mega: true` y 22 Megas mas.
+**Estado del catalogo backend (v3):** expandido a **205 Pokemon base + 64 Mega
+Evoluciones (269 entradas totales)** usando la lista de WikiDex. Las Megas
+canonicas (Gen VI/VII, como Mega-Lucario, Mega-Charizard X/Y, Mega-Gardevoir,
+Mega-Rayquaza, etc.) usan stats oficiales. Las Megas exclusivas de Champions
+(Mega-Greninja, Mega-Delphox, Mega-Chesnaught, Mega-Feraligatr, etc.) llevan
+`mega_speculado: true` para senalar que sus stats son aproximaciones coherentes
+pendientes de datos oficiales. `/lza/catalogo` tambien expone Megas (Lucario +
+22 mas) para el modo Action PvP.
 
 ---
 
