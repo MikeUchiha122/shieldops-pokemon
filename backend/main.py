@@ -46,10 +46,16 @@ app = FastAPI(
     redoc_url="/redoc",
 )
 
-# CORS — ajustar origins en producción
+# CORS — producción + desarrollo local (file:// usa origin "null")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://MikeUchiha122.github.io", "https://thriving-tranquility-production.up.railway.app", "https://railway.app"],
+    allow_origins=[
+        "https://MikeUchiha122.github.io",
+        "https://thriving-tranquility-production.up.railway.app",
+        "https://railway.app",
+        "null",
+    ],
+    allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$",
     allow_methods=["GET", "POST"],
     allow_headers=["Content-Type", "Authorization"],
 )

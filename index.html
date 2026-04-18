@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -3853,8 +3853,8 @@ async function champ__generarGuia() {
   res.style.display = 'block';
   res.innerHTML = '⏳ Simulando batallas internas contra amenazas meta...';
   if (!BACKEND || !CEREBROS_ONLINE.champions) {
-    res.innerHTML = '⚡ Cerebro Champions offline. Conecta el backend para generar guías.
-Ejemplo: flutter_mane, garchomp, heatran, dragapult';
+    res.innerHTML = `⚡ Cerebro Champions offline. Conecta el backend para generar guías.
+Ejemplo: flutter_mane, garchomp, heatran, dragapult`;
     return;
   }
   try {
@@ -3865,34 +3865,34 @@ Ejemplo: flutter_mane, garchomp, heatran, dragapult';
     var d = await r.json();
     if (!r.ok || !d.ok) { res.innerHTML = '❌ ' + (d.detail || d.errores || 'Error desconocido'); return; }
     var data = d.data;
-    var out = '🏆 ' + data.pokemon + ' [' + data.tipos.join('/') + '] — Tier ' + data.tier + '
-';
-    out += '📐 Formato: ' + data.formato + ' · Gen ' + data.generaciones + '
-';
-    out += '🔍 Amenazas evaluadas: ' + data.amenazas_evaluadas + '
+    var out = '🏆 ' + data.pokemon + ' [' + data.tipos.join('/') + '] — Tier ' + data.tier + `
+`;
+    out += '📐 Formato: ' + data.formato + ' · Gen ' + data.generaciones + `
+`;
+    out += '🔍 Amenazas evaluadas: ' + data.amenazas_evaluadas + `
 
-';
+`;
     data.top_builds.forEach(function(b, i) {
-      out += '── Build #' + (i+1) + ' ──────────────────────
-';
-      out += '  Naturaleza: ' + b.naturaleza + '
-';
-      out += '  Objeto: ' + b.objeto + '
-';
-      out += '  Movimientos: ' + b.movimientos.join(', ') + '
-';
-      out += '  Victorias meta: ' + b.victorias_meta + '/' + b.total_amenazas + '
-';
-      out += '  Score: ' + b.score + '
-';
+      out += '── Build #' + (i+1) + ` ──────────────────────
+`;
+      out += '  Naturaleza: ' + b.naturaleza + `
+`;
+      out += '  Objeto: ' + b.objeto + `
+`;
+      out += '  Movimientos: ' + b.movimientos.join(', ') + `
+`;
+      out += '  Victorias meta: ' + b.victorias_meta + '/' + b.total_amenazas + `
+`;
+      out += '  Score: ' + b.score + `
+`;
       if (b.stats_finales) {
         var s = b.stats_finales;
         out += '  Stats: HP ' + s.hp + ' · Atk ' + s.ataque + ' · Def ' + s.defensa;
-        out += ' · SpA ' + s.ataque_especial + ' · SpD ' + s.defensa_especial + ' · Spe ' + s.velocidad + '
-';
+        out += ' · SpA ' + s.ataque_especial + ' · SpD ' + s.defensa_especial + ' · Spe ' + s.velocidad + `
+`;
       }
-      out += '
-';
+      out += `
+`;
     });
     res.innerHTML = out;
   } catch(e) { res.innerHTML = '❌ Error de red: ' + e.message; }
@@ -3917,15 +3917,15 @@ async function champ__generarEquipo() {
     var d = await r.json();
     if (!r.ok || !d.ok) { res.innerHTML = '❌ ' + (d.detail || 'Error desconocido'); return; }
     var data = d.data;
-    var out = '🧩 Equipo Champions Singles — ' + data.formato + '
-';
-    out += '⚓ Ancla: ' + data.ancla + '
+    var out = '🧩 Equipo Champions Singles — ' + data.formato + `
+`;
+    out += '⚓ Ancla: ' + data.ancla + `
 
-';
+`;
     data.equipo.forEach(function(p, i) {
       var tierColor = p.tier === 'S' ? '[S★]' : p.tier === 'A' ? '[A]' : '[B]';
-      out += (i+1) + '. ' + p.nombre + ' ' + tierColor + ' [' + p.tipos.join('/') + ']
-';
+      out += (i+1) + '. ' + p.nombre + ' ' + tierColor + ' [' + p.tipos.join('/') + `]
+`;
     });
     res.innerHTML = out;
   } catch(e) { res.innerHTML = '❌ Error de red: ' + e.message; }
@@ -3974,14 +3974,14 @@ async function champ__calcularDano() {
     var d = await r.json();
     if (!r.ok || !d.ok) { res.innerHTML = '❌ ' + (d.detail || 'Error'); return; }
     var data = d.data;
-    res.innerHTML = data.detalle + '
-Daño: ' + data.dano_minimo + '–' + data.dano_maximo +
+    res.innerHTML = data.detalle + `
+Daño: ` + data.dano_minimo + '–' + data.dano_maximo +
       ' (' + data.porcentaje_min + '–' + data.porcentaje_max + ' %)' +
-      '
-Efectividad: ×' + data.efectividad +
+      `
+Efectividad: ×` + data.efectividad +
       ' · STAB: ' + (data.stab ? 'Sí' : 'No') +
-      '
-' + (data.ko_garantizado ? '✅ KO Garantizado' : data.posible_2hko ? '⚠️ 2HKO Posible' : '❌ No KO');
+      `
+` + (data.ko_garantizado ? '✅ KO Garantizado' : data.posible_2hko ? '⚠️ 2HKO Posible' : '❌ No KO');
   } catch(e) { res.innerHTML = '❌ Error de red: ' + e.message; }
 }
 
@@ -3991,14 +3991,14 @@ async function champ__cargarCatalogo(tier) {
   res.style.display = 'block';
   res.innerHTML = '⏳ Cargando catálogo...';
   if (!BACKEND || !CEREBROS_ONLINE.champions) {
-    res.innerHTML = '⚡ Cerebro Champions offline.
+    res.innerHTML = `⚡ Cerebro Champions offline.
 
 Pokémon destacados (multi-generacional):
-' +
-      '[S★] Flutter Mane · Iron Bundle · Landorus-T · Heatran · Toxapex · Dragapult
-' +
-      '[A]  Garchomp · Urshifu · Volcarona · Tyranitar · Clefable · Kyurem-Black
-' +
+` +
+      `[S★] Flutter Mane · Iron Bundle · Landorus-T · Heatran · Toxapex · Dragapult
+` +
+      `[A]  Garchomp · Urshifu · Volcarona · Tyranitar · Clefable · Kyurem-Black
+` +
       '[B]  Slowbro · Magnezone · Scizor · Hawlucha · Mimikyu · Ferrothorn';
     return;
   }
@@ -4008,15 +4008,15 @@ Pokémon destacados (multi-generacional):
     var d = await r.json();
     if (!r.ok) { res.innerHTML = '❌ Error cargando catálogo'; return; }
     var data = d.data;
-    var out = '📖 Catálogo Champions' + (tier ? ' — Tier ' + tier : '') + '
-';
-    out += 'Total: ' + data.total + ' Pokémon
+    var out = '📖 Catálogo Champions' + (tier ? ' — Tier ' + tier : '') + `
+`;
+    out += 'Total: ' + data.total + ` Pokémon
 
-';
+`;
     (data.pokemon || []).forEach(function(p) {
       var tierMark = p.tier === 'S' ? '[S★]' : p.tier === 'A' ? '[A] ' : '[B] ';
-      out += tierMark + ' ' + p.nombre + ' [' + p.tipos.join('/') + ']
-';
+      out += tierMark + ' ' + p.nombre + ' [' + p.tipos.join('/') + `]
+`;
     });
     res.innerHTML = out;
   } catch(e) { res.innerHTML = '❌ Error de red: ' + e.message; }
@@ -4073,7 +4073,7 @@ function __switchMode(m){
 // ═══════════════════════════════════════════════════════════════
 //  Backend local (descomenta si tienes el backend corriendo en puerto 8001):
 // var BACKEND = "http://localhost:8001/api/v1";
-var BACKEND = null;
+var BACKEND = "http://localhost:8001/api/v1";
 var CEREBROS_ONLINE = {eyp: false, lza: false, go: false, champions: false};
 var CEREBROS_CHECKED = false;
 
@@ -4149,23 +4149,23 @@ async function eyp__generarGuia() {
     var d = await r.json();
     if (!r.ok || !d.ok) { res.innerHTML = '❌ ' + (d.detail || 'Error'); return; }
     var data = d.data;
-    var out = '⚡ ' + data.pokemon + ' [' + (data.tipos||[]).join('/') + '] — ' + data.formato + '
-';
-    out += '🔍 Amenazas evaluadas: ' + data.amenazas_evaluadas + '
+    var out = '⚡ ' + data.pokemon + ' [' + (data.tipos||[]).join('/') + '] — ' + data.formato + `
+`;
+    out += '🔍 Amenazas evaluadas: ' + data.amenazas_evaluadas + `
 
-';
+`;
     (data.top_builds||[]).forEach(function(b,i){
-      out += '── Build #'+(i+1)+' ─────────────────────
-';
-      out += '  Naturaleza: '+b.naturaleza+'
-';
-      out += '  Objeto: '+b.objeto+'
-';
-      out += '  Movimientos: '+(b.movimientos||[]).join(', ')+'
-';
-      out += '  Victorias: '+b.victorias_meta+'/'+b.total_amenazas+' · Score: '+b.score+'
+      out += '── Build #'+(i+1)+` ─────────────────────
+`;
+      out += '  Naturaleza: '+b.naturaleza+`
+`;
+      out += '  Objeto: '+b.objeto+`
+`;
+      out += '  Movimientos: '+(b.movimientos||[]).join(', ')+`
+`;
+      out += '  Victorias: '+b.victorias_meta+'/'+b.total_amenazas+' · Score: '+b.score+`
 
-';
+`;
     });
     res.innerHTML = out;
   } catch(e) { res.innerHTML = '❌ ' + e.message; }
@@ -4188,12 +4188,12 @@ async function eyp__generarEquipo() {
     var d = await r.json();
     if (!r.ok || !d.ok) { res.innerHTML = '❌ ' + (d.detail || 'Error'); return; }
     var data = d.data;
-    var out = '⚡ Equipo VGC — Ancla: ' + data.ancla + '
+    var out = '⚡ Equipo VGC — Ancla: ' + data.ancla + `
 
-';
+`;
     (data.equipo||[]).forEach(function(p,i){
-      out += (i+1)+'. '+p.nombre+' ['+p.tipos.join('/')+']'+(p.restringido?' ★':'')+'
-';
+      out += (i+1)+'. '+p.nombre+' ['+p.tipos.join('/')+']'+(p.restringido?' ★':'')+`
+`;
     });
     res.innerHTML = out;
   } catch(e) { res.innerHTML = '❌ ' + e.message; }
@@ -4217,24 +4217,24 @@ async function lza__generarGuia() {
     var d = await r.json();
     if (!r.ok || !d.ok) { res.innerHTML = '❌ ' + (d.detail || 'Error'); return; }
     var data = d.data;
-    var out = '✦ ' + data.pokemon + ' [' + (data.tipos||[]).join('/') + ']
-';
-    out += '🔍 Amenazas evaluadas: ' + (data.amenazas_evaluadas||'-') + '
+    var out = '✦ ' + data.pokemon + ' [' + (data.tipos||[]).join('/') + `]
+`;
+    out += '🔍 Amenazas evaluadas: ' + (data.amenazas_evaluadas||'-') + `
 
-';
+`;
     (data.top_builds||[]).forEach(function(b,i){
-      out += '── Build #'+(i+1)+' ─────────────────────
-';
-      out += '  Objeto: '+b.objeto+'
-';
-      out += '  Movimientos: '+(b.movimientos||[]).join(', ')+'
-';
-      out += '  Victorias: '+b.victorias_meta+'/'+b.total_amenazas+' · Score: '+b.score+'
-';
-      if(b.mega_activa) out += '  ✦ Mega Evolution activa
-';
-      out += '
-';
+      out += '── Build #'+(i+1)+` ─────────────────────
+`;
+      out += '  Objeto: '+b.objeto+`
+`;
+      out += '  Movimientos: '+(b.movimientos||[]).join(', ')+`
+`;
+      out += '  Victorias: '+b.victorias_meta+'/'+b.total_amenazas+' · Score: '+b.score+`
+`;
+      if(b.mega_activa) out += `  ✦ Mega Evolution activa
+`;
+      out += `
+`;
     });
     res.innerHTML = out;
   } catch(e) { res.innerHTML = '❌ ' + e.message; }
@@ -4257,12 +4257,12 @@ async function lza__generarEquipo() {
     var d = await r.json();
     if (!r.ok || !d.ok) { res.innerHTML = '❌ ' + (d.detail || 'Error'); return; }
     var data = d.data;
-    var out = '✦ Equipo Battle Club — Ancla: ' + data.ancla + '
+    var out = '✦ Equipo Battle Club — Ancla: ' + data.ancla + `
 
-';
+`;
     (data.equipo||[]).forEach(function(p,i){
-      out += (i+1)+'. '+p.nombre+' ['+p.tipos.join('/')+']'+(p.puede_mega?' (Mega)':'')+'
-';
+      out += (i+1)+'. '+p.nombre+' ['+p.tipos.join('/')+']'+(p.puede_mega?' (Mega)':'')+`
+`;
     });
     res.innerHTML = out;
   } catch(e) { res.innerHTML = '❌ ' + e.message; }

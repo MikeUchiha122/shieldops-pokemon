@@ -108,6 +108,12 @@ Swagger UI completo: http://localhost:8001/docs
 | Nivel | 50 (competitivo) | 1–51 |
 | Equipo | 6 Pokemon | 3 Pokemon |
 
+### Mega Evolucion
+
+Solo el cerebro **LZA** soporta Mega Evolucion (1 Mega por combate, altera tipos y stats).
+Champions es Singles sin Tera/Mega/Dmax por diseño, por lo que **Mega-Lucario solo existe en LZA**
+(Lucario esta en `/lza/catalogo` con `puede_mega: true`).
+
 ---
 
 ## Estructura del proyecto

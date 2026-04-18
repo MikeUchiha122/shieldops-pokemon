@@ -53,7 +53,7 @@ echo  [OK] Dependencias OK (fastapi, uvicorn, pydantic)
 :: ── 4. Apuntar el frontend al backend local ───────────────────────────
 echo  [..] Configurando frontend -> http://localhost:8001/api/v1 ...
 powershell -NoProfile -Command ^
-  "(Get-Content '%~dp0index.html' -Raw) -replace 'var BACKEND = null;', 'var BACKEND = ""http://localhost:8001/api/v1"";' | Set-Content '%~dp0index.html' -Encoding UTF8"
+  "(Get-Content '%~dp0index.html' -Raw -Encoding UTF8) -replace 'var BACKEND = null;', 'var BACKEND = ""http://localhost:8001/api/v1"";' | Set-Content '%~dp0index.html' -Encoding UTF8 -NoNewline"
 echo  [OK] Frontend configurado
 
 :: ── 5. Lanzar backend en ventana separada ────────────────────────────
