@@ -187,7 +187,11 @@ def _mejor_movset(poke_data: dict, tipos_poke: list[str],
 def _evaluar_build(poke_data: dict, nombre: str, naturaleza: str,
                    evs_config: dict, objeto: str, nivel: int = 100) -> dict:
     tipos = poke_data["tipos"]
-    stats_b = poke_data["stats"]
+    _raw = poke_data["stats"]
+    _map = {"atq_fis": "ataque", "def_fis": "defensa",
+            "atq_esp": "ataque_especial", "def_esp": "defensa_especial",
+            "vel": "velocidad"}
+    stats_b = {_map.get(k, k): v for k, v in _raw.items()}
     ivs = {s: 31 for s in ("hp", "ataque", "defensa", "ataque_especial",
                             "defensa_especial", "velocidad")}
     evs = {s: evs_config.get(s, 0) for s in ivs}
